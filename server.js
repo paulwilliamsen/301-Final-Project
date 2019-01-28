@@ -7,7 +7,7 @@ const methodOverride = require('method-override');
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
-const client = new pg.Client(process.envDATABASE_URL);
+const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('err', err=>console.log(err));
 
@@ -29,13 +29,23 @@ app.use(
   })
 );
 app.get('/', loadLogin);
-app.get('/dashboard', getLocation);
+// app.get('/dashboard', getLocation);
+app.get('/dashboard', checkPassword);
+app.post('/dashboard', loadDashboard);
 
 
 //error handler
 function errorHandler(err, response){
 	console.error(err);
 	if(response) response.status(500).send('Something Broke!!!')
+}
+
+function loadDashboard(request, response) {
+  let {username, password} = request.body;
+  let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
+  let values = [username, password];
+  return client.query(SQL, values)
+  .then(response.render('./pages/dashboard'))
 }
 
 function getLocation(request, response){
@@ -50,6 +60,24 @@ function getLocation(request, response){
         .then(data=>response.send(data))
     }
   }
+}
+
+function checkPassword (request, response){
+  let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
+  let values = [request.query.username, request.query.password];
+
+  client.query(SQL, values)
+  .then(result => {
+    if(result.rows.length > 0){
+      response.render('./pages/dashboard');
+    }
+    else{
+      response.render('./index')
+    }
+  })
+  .catch( () => {
+    response.render('./index')
+  });
 }
 
 Location.fetchLocation(query){

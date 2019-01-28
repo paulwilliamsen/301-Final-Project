@@ -1,11 +1,10 @@
-<h2 class="view-title"> <%- 'get' === formaction ? "Log In" : " Create an account" %></h2>
+
 
 <form class="login-form" action="/dashboard" method="get">
-  <input type="hidden" name="_method" value="<%-'get' === formaction ? 'get':'post'%>">
   <fieldset>
     <label for="name">
       <section>Name</section>  
-      <input type="text" name="name"required>
+      <input type="text" name="username" required>
     </label>
   </fieldset>
   <fieldset>
@@ -16,4 +15,3 @@
   </fieldset>
   <button type="submit">Save User</button>
 </form>
-<a href="/" method="post"> <%- 'get' === formaction ? "Make a new account" : "I have an account" %></a>
