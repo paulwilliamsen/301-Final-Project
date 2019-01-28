@@ -6,7 +6,7 @@ const pg =require('pg');
 const methodOverride = require('method-override');
 
 require('dotenv').config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const client = new pg.Client(process.envDATABASE_URL);
 client.connect();
 client.on('err', err=>console.log(err));
