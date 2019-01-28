@@ -33,8 +33,11 @@ app.get('/', loadLogin);
 app.get('/dashboard', checkPassword);
 app.post('/dashboard', loadDashboard);
 
-function loadLogin (request, response) {
-  response.render('./index', {formaction: 'get'});
+
+//error handler
+function errorHandler(err, response){
+	console.error(err);
+	if(response) response.status(500).send('Something Broke!!!')
 }
 
 function loadDashboard(request, response) {
@@ -45,9 +48,20 @@ function loadDashboard(request, response) {
   .then(response.render('./pages/dashboard'))
 }
 
-function getLocation (request, response) {
-  response.render('./pages/dashboard');
+function getLocation(request, response){
+  const locationHandler = {
+
+    query: request.query.data,
+
+    // cacheHit:
+
+    cacheMiss: ()=>{
+      Location.fetchLocation(request.query.data)
+        .then(data=>response.send(data))
+    }
+  }
 }
+
 function checkPassword (request, response){
   let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
   let values = [request.query.username, request.query.password];
@@ -65,3 +79,37 @@ function checkPassword (request, response){
     response.render('./index')
   });
 }
+
+Location.fetchLocation(query){
+	const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
+	return superagent.get(geoData)
+		.then(response=>{
+			if(!response.body(data)){
+				throw 'no data';
+			}
+			else{
+				let location = new Location(query, response.body.results[0])
+				return location.save()
+					.then(result =>{
+						location.id = result.rows[0].id;
+						return location;
+					})
+			}
+		})
+		.catch(error => errorHandler(error));
+}
+
+function Location(query, response){
+	this.formatted_query = response.formatted_address; 
+	this.latitude = response.geometry.location.lat;
+	this.longitude = response.geometry.location.lng;
+	this.search_query = query;
+}
+
+function loadLogin (request, response) {
+  response.render('./index', {formaction: 'get'});
+
+// function getLocation(request, response) {
+//   response.render('./pages/dashboard');
+// }
+
