@@ -29,9 +29,57 @@ app.use(
   })
 );
 
+//error handler
+function errorHandler(err, response){
+	console.error(err);
+	if(response) response.status(500).send('Something Broke!!!')
+}
+
 app.get('/', (request, response)=>{
   response.render('index');
 });
+
+app.get('/dashboard', getLocation);
+
+function getLocation(request, response){
+  const locationHandler = {
+
+    query: request.query.data,
+
+    // cacheHit:
+
+    cacheMiss: ()=>{
+      Location.fetchLocation(request.query.data)
+        .then(data=>response.send(data))
+    }
+  }
+}
+
+Location.fetchLocation(query){
+	const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
+	return superagent.get(geoData)
+		.then(response=>{
+			if(!response.body(data)){
+				throw 'no data';
+			}
+			else{
+				let location = new Location(query, response.body.results[0])
+				return location.save()
+					.then(result =>{
+						location.id = result.rows[0].id;
+						return location;
+					})
+			}
+		})
+		.catch(error => errorHandler(error));
+}
+
+function Location(query, response){
+	this.formatted_query = response.formatted_address; 
+	this.latitude = response.geometry.location.lat;
+	this.longitude = response.geometry.location.lng;
+	this.search_query = query;
+}
 
 
 
