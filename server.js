@@ -39,6 +39,12 @@ function errorHandler(err, response){
 }
 
 function getLocation(request, response){
+	let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
+	let values = [locationHandler.query.id];
+	return client.query(SQL, values);
+}
+
+function findLocation(request, response){
   const locationHandler = {
 
     query: request.query.data,
@@ -49,7 +55,8 @@ function getLocation(request, response){
       Location.fetchLocation(request.query.data)
         .then(data=>response.send(data))
     }
-  }
+	}
+	Location.lookupLocation(locationHandler);
 }
 
 Location.fetchLocation(query){
@@ -78,9 +85,31 @@ function Location(query, response){
 	this.search_query = query;
 }
 
+Location.prototype.save(){
+	let SQL = `INSERT INTO locations (formatted_query, latitude. longitude, search_query) VALUES ($1, $2, $3, $4) RETURNING id;`;
+	let values =[this.formatted_query, this.latitude, this.longitude, this.search_query];
+	return client.query(SQL, values);
+}
+
+Location.lookupLocation = (handler){
+	const SQL = `SELECT * FROM locations WHERE search_query=$1`
+	const values = [handler.query];
+
+	return client.query(SQL, values)
+		.then(results=>{
+			if(results.rowCount > 0){
+				handler.cacheHit(results);
+			}
+			else{
+				handler.cacheMiss();
+			}
+		})
+		.catch(console.error);
+};
+
 function loadLogin (request, response) {
   response.render('./index', {formaction: 'get'});
-
+}
 // function getLocation(request, response) {
 //   response.render('./pages/dashboard');
 // }
