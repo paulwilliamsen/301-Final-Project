@@ -1,0 +1,35 @@
+{
+  "name": "301-final-project",
+  "version": "1.0.0",
+  "description": "day planner app",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "i": "^0.3.6",
+    "method-override": "^3.0.0",
+    "pg": "^7.8.0",
+    "superagent": "^4.1.0",
+    "npm": "^6.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pepperedsalt/301-Final-Project.git"
+  },
+  "keywords": [
+    "day",
+    "planner"
+  ],
+  "author": "Dan Le Chris Merritt Paul Williamsen Jessica Roland",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pepperedsalt/301-Final-Project/issues"
+  },
+  "homepage": "https://github.com/pepperedsalt/301-Final-Project#readme"
+}
