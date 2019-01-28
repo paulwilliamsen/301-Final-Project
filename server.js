@@ -6,7 +6,7 @@ const pg =require('pg');
 const methodOverride = require('method-override');
 
 require('dotenv').config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const client = new pg.Client(process.envDATABASE_URL);
 client.connect();
 client.on('err', err=>console.log(err));
@@ -28,18 +28,15 @@ app.use(
     }
   })
 );
+app.get('/', loadLogin);
+app.get('/dashboard', getLocation);
+
 
 //error handler
 function errorHandler(err, response){
 	console.error(err);
 	if(response) response.status(500).send('Something Broke!!!')
 }
-
-app.get('/', (request, response)=>{
-  response.render('index');
-});
-
-app.get('/dashboard', getLocation);
 
 function getLocation(request, response){
   const locationHandler = {
@@ -81,8 +78,10 @@ function Location(query, response){
 	this.search_query = query;
 }
 
+function loadLogin (request, response) {
+  response.render('./index', {formaction: 'get'});
 
-
-
-
+// function getLocation(request, response) {
+//   response.render('./pages/dashboard');
+// }
 
