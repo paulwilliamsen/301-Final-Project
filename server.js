@@ -28,13 +28,14 @@ app.use(
     }
   })
 );
+app.get('/', loadLogin);
+app.get('/dashboard', getLocation);
 
-app.get('/', (request, response)=>{
-  response.render('index');
-});
+function loadLogin (request, response) {
+  response.render('./index', {formaction: 'get'});
+}
 
-
-
-
-
+function getLocation(request, response) {
+  response.render('./pages/dashboard');
+}
 
