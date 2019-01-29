@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS locations;
 DROP TABLE IF EXISTS users;
 
@@ -12,6 +13,16 @@ CREATE TABLE locations(
   latitude NUMERIC(8,6),
   longitude NUMERIC(9,6),
   search_query VARCHAR(40),
+  user_id INT,
+  FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE TABLE events(
+  id SERIAL PRIMARY KEY,
+  date DATE,
+  start_time TIME,
+  title VARCHAR(255),
+  description VARCHAR(255),
   user_id INT,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
