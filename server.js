@@ -41,21 +41,32 @@ function errorHandler(err, response){
 }
 
 function loadDashboard(request, response) {
-  let {username, password} = request.body;
-  let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
-  let values = [username, password];
-  return client.query(SQL, values)
-    .then(response.render('./pages/dashboard'))
-}
+  let SQL = `SELECT * FROM users WHERE username=$1;`;
+  let values = [request.body.username];
 
-function getLocation(request, response){
-  let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
-  let values = [locationHandler.query.id];
-  return client.query(SQL, values);
+  client.query(SQL, values)
+    .then(result => {
+      console.log(result.rows)
+      if(result.rows.length > 0){
+        console.log('username exists')
+        response.redirect('/');
+      } else{
+        let {username, password} = request.body;
+        let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
+        let values = [username, password];
+        return client.query(SQL, values)
+          .then(response.render('./pages/dashboard', {data: 'No Data'}))
+      }
+    })
 }
+// function getLocation(request, response){
+//   let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
+//   let values = [locationHandler.query.id];
+//   return client.query(SQL, values);
+// }
 
 function findLocation(request, response){
-	console.log(request.body.search);
+  console.log(request.body.search);
   const locationHandler = {
 
     query: request.body.search,
@@ -82,7 +93,6 @@ function checkPassword (request, response){
       if(result.rows.length > 0){
         console.log('here in if')
         response.render('./pages/dashboard', {data:'No data yet'});
-        
       }
       else{
         console.log('here in else')
@@ -103,8 +113,8 @@ Location.fetchLocation = (query)=>{
         throw 'no data';
       }
       else{
-				let location = new Location(query, response.body.results[0])
-				console.log(location);
+        let location = new Location(query, response.body.results[0])
+        console.log(location);
         return location.save()
           .then(result =>{
             location.id = result.rows[0].id;
@@ -116,7 +126,7 @@ Location.fetchLocation = (query)=>{
 }
 
 function Location(query, response){
-  this.formatted_query = response.formatted_address; 
+  this.formatted_query = response.formatted_address;
   this.latitude = response.geometry.location.lat;
   this.longitude = response.geometry.location.lng;
   this.search_query = query;
@@ -150,4 +160,3 @@ function loadLogin (request, response) {
 // function getLocation(request, response) {
 //   response.render('./pages/dashboard');
 // }
-
