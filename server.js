@@ -32,6 +32,8 @@ app.get('/', loadLogin);
 app.post('/dashboard', checkPassword);
 app.post('/create-account', loadDashboard);
 app.post('/location', findLocation);
+app.post('/events', createEvent);
+app.get('/location', retrieveEvents);
 
 
 //error handler
@@ -66,7 +68,6 @@ function loadDashboard(request, response) {
 // }
 
 function findLocation(request, response){
-  console.log(request.body.search);
   const locationHandler = {
 
     query: request.body.search,
@@ -151,12 +152,37 @@ Location.lookupLocation = (handler)=>{
         handler.cacheMiss();
       }
     })
-    .catch(console.error);
+    .catch(error => errorHandler(error));
 };
 
 function loadLogin (request, response) {
   response.render('./index', {formaction: 'get'});
 }
-// function getLocation(request, response) {
-//   response.render('./pages/dashboard');
-// }
+
+function createEvent(request, response) {
+  let {date, start_time, title, description, user_id} = request.body;
+  let SQL = `INSERT INTO events (date, start_time, title, description, user_id) VALUES ($1, $2, $3, $4, $5);`;
+  let values = [date, start_time, title, description, user_id];
+
+  return client.query(SQL, values)
+    .then(response.render('pages/dashboard'))
+    .catch(error => errorHandler(error));
+}
+
+function retrieveEvents(request, response) {
+  let SQL = `SELECT * FROM events WHERE user_id=$1;`;
+  let values = [1];
+
+  return client.query(SQL, values)
+    .then(result=> {
+      console.log(result);
+      if(result.rows.length > 0) {
+        console.log(result.rows.length);
+        response.render('pages/dashboard', {events: result.rows});
+      } else {
+        response.render('pages/dashboard', 'No events saved.')
+      }
+    })
+    .catch(error => errorHandler(error));
+}
+

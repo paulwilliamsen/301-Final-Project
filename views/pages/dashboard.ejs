@@ -4,11 +4,13 @@
 
   </head>
   <body>
-    <form action="/location" method="post">
-      <input type="text" name="search" required/>
-      <button type="submit"></button>
-    </form>
-    <p><%= data.formatted_query %></p>
+    
+    <%- include('../partials/location') %>
+
+    <% if(events) { %>
+      <%- include('../partials/events', {events}) %>
+    <% } %>
+    
   </body>
 </html>
 
