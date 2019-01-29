@@ -1,9 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
 
+  </head>
+  <body>
+    <form action="/location" method="post">
+      <input type="text" name="search" required/>
+      <button type="submit"></button>
+    </form>
+    <p><%= data.formatted_query %></p>
+  </body>
+</html>
 
-<h1>success</h1>
-
-<form action="/location" method="post">
-  <input type="text" name="search" required/>
-  <button type="submit"></button>
-</form>
-<p><%= data.formatted_query %></p>
