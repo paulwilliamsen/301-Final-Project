@@ -31,7 +31,7 @@ app.use(
 app.get('/', loadLogin);
 app.post('/dashboard', checkPassword);
 app.post('/create-account', loadDashboard);
-app.post('/location', findLocation);
+app.post('/location', requestLocation);
 app.post('/events', createEvent);
 app.get('/dashboard', getAllInfo);
 
@@ -108,8 +108,6 @@ function findLocation(request, response){
 
     cacheMiss: ()=>{
       response.render('pages/location_page');
-      // Location.fetchLocation(locationHandler.query)
-      //   .then(data=>getAllInfo(data));
     }
   };
   Location.lookupLocation(locationHandler);
@@ -142,10 +140,8 @@ Location.fetchLocation = (query)=>{
       }
       else{
         let location = new Location(query, response.body.results[0])
-        console.log(location);
         return location.save()
-          .then(result =>{
-            location.id = result.rows[0].id;
+          .then(() =>{
             return location;
           })
       }
@@ -161,14 +157,14 @@ function Location(query, response){
 }
 
 Location.prototype.save = function(){
-  let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query) VALUES ($1, $2, $3, $4) RETURNING id;`;
+  let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query) VALUES ($1, $2, $3, $4);`;
   let values =[this.formatted_query, this.latitude, this.longitude, this.search_query];
   return client.query(SQL, values);
 }
 
 function getAllInfo(request, response) {
-  getEvents(user_id);
-
+  // getEvents(user_id);
+  response.render('pages/dashboard', {data: request})
 }
 
 function createEvent(request, response) {
@@ -187,9 +183,7 @@ function getEvents(request, response) {
 
   return client.query(SQL, values)
     .then(result=> {
-      console.log(result);
       if(result.rows.length > 0) {
-        console.log(result.rows.length);
         response.render('pages/dashboard', {data, events: result.rows});
       } else {
         response.render('pages/dashboard', 'No events saved.')
@@ -198,3 +192,10 @@ function getEvents(request, response) {
     .catch(error => errorHandler(error));
 }
 
+function requestLocation(request, response){
+  Location.fetchLocation(request.body.search)
+    .then(data=>{
+      console.log(data);
+      getAllInfo(data, response);
+    });
+}
