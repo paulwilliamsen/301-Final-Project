@@ -17,3 +17,8 @@ CREATE TABLE locations(
 );
 
 INSERT INTO users (username, password) VALUES ('chris', 'paul');
+INSERT INTO users (username, password) VALUES ('paul', 'dog');
+INSERT INTO users (username, password) VALUES ('steve', 'cat');
+INSERT INTO users (username, password) VALUES ('jessica', 'fish');
+INSERT INTO users (username, password) VALUES ('larry', 'airplane');
+INSERT INTO users (username, password) VALUES ('sarah', 'computer');

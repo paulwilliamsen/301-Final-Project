@@ -29,8 +29,8 @@ app.use(
   })
 );
 app.get('/', loadLogin);
-app.get('/dashboard', checkPassword);
-app.post('/dashboard', loadDashboard);
+app.post('/dashboard', checkPassword);
+app.post('/create-account', loadDashboard);
 app.post('/location', findLocation);
 
 
@@ -74,18 +74,23 @@ function findLocation(request, response){
 
 function checkPassword (request, response){
   let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
-  let values = [request.query.username, request.query.password];
+  let values = [request.body.username, request.body.password];
 
   client.query(SQL, values)
     .then(result => {
+      console.log(result.rows)
       if(result.rows.length > 0){
+        console.log('here in if')
         response.render('./pages/dashboard', {data:'No data yet'});
+        
       }
       else{
-        response.render('./index')
+        console.log('here in else')
+        response.redirect('/')
       }
     })
     .catch( () => {
+      console.log('here in catch')
       response.render('./index')
     });
 }
