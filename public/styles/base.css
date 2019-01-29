@@ -1,0 +1,9 @@
+body {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.login {
+  padding-top: 20px;
+}
