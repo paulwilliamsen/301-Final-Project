@@ -29,8 +29,8 @@ app.use(
   })
 );
 app.get('/', loadLogin);
-app.post('/dashboard', checkPassword);
-app.post('/create-account', loadDashboard);
+app.post('/check-password', checkPassword);
+app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.post('/events', createEvent);
 app.get('/dashboard', getAllInfo);
@@ -69,7 +69,7 @@ function checkPassword (request, response){
     });
 }
 
-function loadDashboard(request, response) {
+function addAccount(request, response) {
   let SQL = `SELECT * FROM users WHERE username=$1;`;
   let values = [request.body.username];
 
@@ -84,7 +84,7 @@ function loadDashboard(request, response) {
         let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
         let values = [username, password];
         return client.query(SQL, values)
-          .then(response.render('./pages/dashboard', {data: 'No Data'}))
+          .then(response.redirect('/'))
       }
     })
 }
