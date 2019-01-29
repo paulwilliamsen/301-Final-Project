@@ -29,8 +29,8 @@ app.use(
   })
 );
 app.get('/', loadLogin);
-app.get('/dashboard', checkPassword);
-app.post('/dashboard', loadDashboard);
+app.post('/dashboard', checkPassword);
+app.post('/create-account', loadDashboard);
 app.post('/location', findLocation);
 app.post('/events', createEvent);
 app.get('/location', retrieveEvents);
@@ -43,18 +43,29 @@ function errorHandler(err, response){
 }
 
 function loadDashboard(request, response) {
-  let {username, password} = request.body;
-  let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
-  let values = [username, password];
-  return client.query(SQL, values)
-    .then(response.render('./pages/dashboard'))
-}
+  let SQL = `SELECT * FROM users WHERE username=$1;`;
+  let values = [request.body.username];
 
-function getLocation(request, response){
-  let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
-  let values = [locationHandler.query.id];
-  return client.query(SQL, values);
+  client.query(SQL, values)
+    .then(result => {
+      console.log(result.rows)
+      if(result.rows.length > 0){
+        console.log('username exists')
+        response.redirect('/');
+      } else{
+        let {username, password} = request.body;
+        let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
+        let values = [username, password];
+        return client.query(SQL, values)
+          .then(response.render('./pages/dashboard', {data: 'No Data'}))
+      }
+    })
 }
+// function getLocation(request, response){
+//   let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
+//   let values = [locationHandler.query.id];
+//   return client.query(SQL, values);
+// }
 
 function findLocation(request, response){
   const locationHandler = {
@@ -75,18 +86,22 @@ function findLocation(request, response){
 
 function checkPassword (request, response){
   let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
-  let values = [request.query.username, request.query.password];
+  let values = [request.body.username, request.body.password];
 
   client.query(SQL, values)
     .then(result => {
+      console.log(result.rows)
       if(result.rows.length > 0){
+        console.log('here in if')
         response.render('./pages/dashboard', {data:'No data yet'});
       }
       else{
-        response.render('./index')
+        console.log('here in else')
+        response.redirect('/')
       }
     })
     .catch( () => {
+      console.log('here in catch')
       response.render('./index')
     });
 }
@@ -112,7 +127,7 @@ Location.fetchLocation = (query)=>{
 }
 
 function Location(query, response){
-  this.formatted_query = response.formatted_address; 
+  this.formatted_query = response.formatted_address;
   this.latitude = response.geometry.location.lat;
   this.longitude = response.geometry.location.lng;
   this.search_query = query;
@@ -170,3 +185,4 @@ function retrieveEvents(request, response) {
     })
     .catch(error => errorHandler(error));
 }
+
