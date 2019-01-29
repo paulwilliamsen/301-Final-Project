@@ -33,13 +33,40 @@ app.post('/dashboard', checkPassword);
 app.post('/create-account', loadDashboard);
 app.post('/location', findLocation);
 app.post('/events', createEvent);
-app.get('/location', retrieveEvents);
+app.get('/dashboard', getAllInfo);
 
 
 //error handler
 function errorHandler(err, response){
   console.error(err);
   if(response) response.status(500).send('Something Broke!!!')
+}
+
+
+//------------------ Login Functions --------------------------------//
+
+function loadLogin (request, response) {
+  response.render('./index', {formaction: 'get'});
+}
+
+function checkPassword (request, response){
+  let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
+  let values = [request.body.username, request.body.password];
+
+  client.query(SQL, values)
+    .then(result => {
+      if(result.rows.length > 0){
+        findLocation(result.rows[0].id, response);
+      }
+      else{
+        console.log('here in else')
+        response.redirect('/')
+      }
+    })
+    .catch( () => {
+      console.log('here in catch')
+      response.render('./index')
+    });
 }
 
 function loadDashboard(request, response) {
@@ -61,50 +88,50 @@ function loadDashboard(request, response) {
       }
     })
 }
+
+
 // function getLocation(request, response){
 //   let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
 //   let values = [locationHandler.query.id];
 //   return client.query(SQL, values);
 // }
 
+
 function findLocation(request, response){
   const locationHandler = {
 
-    query: request.body.search,
+    query: request,
 
     cacheHit: (results)=>{
-      response.send(results.rows[0]);
+      getAllInfo(results.rows[0]);
     },
 
     cacheMiss: ()=>{
-      Location.fetchLocation(locationHandler.query)
-        .then(data=>response.render('pages/dashboard', {data}));
+      response.render('pages/location_page');
+      // Location.fetchLocation(locationHandler.query)
+      //   .then(data=>getAllInfo(data));
     }
   };
   Location.lookupLocation(locationHandler);
 }
 
-function checkPassword (request, response){
-  let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
-  let values = [request.body.username, request.body.password];
+Location.lookupLocation = (handler)=>{
+
+  const SQL = `SELECT * FROM locations WHERE user_id=$1;`;
+  const values = [handler.query];
 
   client.query(SQL, values)
-    .then(result => {
-      console.log(result.rows)
-      if(result.rows.length > 0){
-        console.log('here in if')
-        response.render('./pages/dashboard', {data:'No data yet'});
+    .then(results=>{
+      console.log('rowCount', results.rowCount);
+      if(results.rowCount > 0){
+        handler.cacheHit(results);
       }
       else{
-        console.log('here in else')
-        response.redirect('/')
+        handler.cacheMiss();
       }
     })
-    .catch( () => {
-      console.log('here in catch')
-      response.render('./index')
-    });
-}
+    .catch(error => errorHandler(error));
+};
 
 Location.fetchLocation = (query)=>{
   const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
@@ -139,24 +166,9 @@ Location.prototype.save = function(){
   return client.query(SQL, values);
 }
 
-Location.lookupLocation = (handler)=>{
-  const SQL = `SELECT * FROM locations WHERE search_query=$1`
-  const values = [handler.query];
+function getAllInfo(request, response) {
+  getEvents(user_id);
 
-  return client.query(SQL, values)
-    .then(results=>{
-      if(results.rowCount > 0){
-        handler.cacheHit(results);
-      }
-      else{
-        handler.cacheMiss();
-      }
-    })
-    .catch(error => errorHandler(error));
-};
-
-function loadLogin (request, response) {
-  response.render('./index', {formaction: 'get'});
 }
 
 function createEvent(request, response) {
@@ -169,7 +181,7 @@ function createEvent(request, response) {
     .catch(error => errorHandler(error));
 }
 
-function retrieveEvents(request, response) {
+function getEvents(request, response) {
   let SQL = `SELECT * FROM events WHERE user_id=$1;`;
   let values = [1];
 
@@ -178,7 +190,7 @@ function retrieveEvents(request, response) {
       console.log(result);
       if(result.rows.length > 0) {
         console.log(result.rows.length);
-        response.render('pages/dashboard', {events: result.rows});
+        response.render('pages/dashboard', {data, events: result.rows});
       } else {
         response.render('pages/dashboard', 'No events saved.')
       }
