@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <%- include('../partials/head') %>
   </head>
   <body>
-    <form action="/location" method="post">
+    <h3>Please enter your location</h3>
+    <hr>
+    <section>
+    <form class="location-body" action="/location" method="post">
       <input type="text" name="search" required/>
-      <button type="submit"></button>
+      <button class="location-button" type="submit"> Search</button>
+    </section>
     </form>
   </body>
 </html>
