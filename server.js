@@ -212,7 +212,7 @@ Location.prototype.save = function(){
 function createEvent(request, response) {
   let {date, start_time, title, description} = request.body;
   let SQL = `INSERT INTO events (date, start_time, title, description, user_id) VALUES ($1, $2, $3, $4, $5);`;
-  let values = [date, start_time, title, description, 1];
+  let values = [date, start_time, title, description, uID];
 
   return client.query(SQL, values)
     .then( data =>{
@@ -223,7 +223,7 @@ function createEvent(request, response) {
 
 function getEvents(request, response) {
   let SQL = `SELECT * FROM events WHERE user_id=$1;`;
-  let values = [1];
+  let values = [uID];
 
   return client.query(SQL, values)
     .then(result=> {
