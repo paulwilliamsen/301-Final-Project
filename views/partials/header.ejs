@@ -1,10 +1,12 @@
 <h1>THE DAILY PLAN-IT</h1>
 <hr>
 
-<form action="/location" method="get">
+<form action="/dashboard" method="post">
+  <input type="hidden" name="userId" value="<%- uID  %>">
   <button type="submit">Dashboard</button>
 </form>
 
 <form action="/eventData" method="get">
   <button type="submit">View Events</button>
+  <input type="hidden" name="userId" value="<%- uID  %>">
 </form>
