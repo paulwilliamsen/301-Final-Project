@@ -1,12 +1,7 @@
-<p><%= events.date %></p>
-<p><%= events.start_time %></p>
-<p><%= events.title %></p>
-<p><%= events.description %></p>
+<% events.forEach(item => { %>
+  <p><%= item.date %></p>
+  <p><%= item.start_time %></p>
+  <p><%= item.title %></p>
+  <p><%= item.description %></p>
+<% }) %>
 
-<form action="/events" method="post">
-  <input type="date" name="date" required/>
-  <input type="time" name="start_time"/>
-  <input type="text" name="title" required/>
-  <input type="text" name="description"/>
-  <button type="submit"></button>
-</form>

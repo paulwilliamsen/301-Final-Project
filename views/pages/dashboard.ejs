@@ -4,9 +4,15 @@
 
   </head>
   <body>
-    
-    <%- include('../partials/location', {data}) %>
+      <form action="/location" method="get">
+        <button type="submit">View API data</button>
+      </form>
+      <form action="/eventData" method="get">
+        <button type="submit">View Events</button>
+      </form>
 
+    
+    <%- include('../partials/location', {location}) %>
 
     
   </body>
