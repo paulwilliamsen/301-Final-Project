@@ -32,10 +32,13 @@ app.get('/', loadLogin);
 app.post('/check-password', checkPassword);
 app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
+app.get('/location', requestLocation);
 app.post('/events', createEvent);
-app.get('/dashboard', getAllInfo);
+// app.get('/dashboard', getAllInfo);
 
+app.get('/eventData', getEvents);
 
+let uID = 0;
 //error handler
 function errorHandler(err, response){
   console.error(err);
@@ -56,7 +59,8 @@ function checkPassword (request, response){
   client.query(SQL, values)
     .then(result => {
       if(result.rows.length > 0){
-        findLocation(result.rows[0].id, response);
+        uID = result.rows[0].id;
+        Location.lookupLocation(result.rows[0].id, response);
       }
       else{
         console.log('here in else')
@@ -68,6 +72,7 @@ function checkPassword (request, response){
       response.render('./index')
     });
 }
+
 
 function addAccount(request, response) {
   let SQL = `SELECT * FROM users WHERE username=$1;`;
@@ -89,47 +94,41 @@ function addAccount(request, response) {
     })
 }
 
+//------------------ Location Functions --------------------------------//
 
-// function getLocation(request, response){
-//   let SQL =`SELECT locations.formatted_query, locations.latitude, locations.longitude FROM locations WHERE location_id=$1 `
-//   let values = [locationHandler.query.id];
-//   return client.query(SQL, values);
-// }
-
-
-function findLocation(request, response){
-  const locationHandler = {
-
-    query: request,
-
-    cacheHit: (results)=>{
-      getAllInfo(results.rows[0]);
-    },
-
-    cacheMiss: ()=>{
-      response.render('pages/location_page');
-    }
-  };
-  Location.lookupLocation(locationHandler);
-}
-
-Location.lookupLocation = (handler)=>{
-
+Location.lookupLocation = (id, response)=>{
   const SQL = `SELECT * FROM locations WHERE user_id=$1;`;
-  const values = [handler.query];
-
+  const values = [id];
   client.query(SQL, values)
     .then(results=>{
-      console.log('rowCount', results.rowCount);
-      if(results.rowCount > 0){
-        handler.cacheHit(results);
+      console.log('check DB FOR existing location:', results.rows);
+      if(results.rows.length > 0){
+        console.log('in lookup (106)');
+        getLocation(results.rows[0].user_id, response);
       }
       else{
-        handler.cacheMiss();
+        response.render('pages/location_page');
       }
     })
     .catch(error => errorHandler(error));
 };
+
+function requestLocation(request, response){
+  Location.fetchLocation(request.body.search)
+    .then(data=>{
+      response.render('pages/dashboard', {location: data});
+    });
+}
+
+ function getLocation(id, response){
+   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
+   let values = [id];
+   client.query(SQL, values)
+   .then(result => {
+     console.log('line 128', result.rows);
+     response.render('pages/dashboard', {location: result.rows[0]})
+   })
+ }
 
 Location.fetchLocation = (query)=>{
   const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
@@ -140,8 +139,10 @@ Location.fetchLocation = (query)=>{
       }
       else{
         let location = new Location(query, response.body.results[0])
+        console.log('response.body line 142', response.body.results[0])
         return location.save()
           .then(() =>{
+            console.log('line 145 location', location);
             return location;
           })
       }
@@ -154,26 +155,38 @@ function Location(query, response){
   this.latitude = response.geometry.location.lat;
   this.longitude = response.geometry.location.lng;
   this.search_query = query;
+  this.user_id = uID;
 }
 
 Location.prototype.save = function(){
-  let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query) VALUES ($1, $2, $3, $4);`;
-  let values =[this.formatted_query, this.latitude, this.longitude, this.search_query];
-  return client.query(SQL, values);
-}
-
-function getAllInfo(request, response) {
-  // getEvents(user_id);
-  response.render('pages/dashboard', {data: request})
+  console.log('line 162');
+  let SQL = `SELECT * FROM locations WHERE user_id=$1;`;
+  let values = [uID];
+  return client.query(SQL, values)
+    .then(results => {
+      console.log('line 167' ,results);
+      if(results.rows.length > 0){
+        console.log('line 165, location data already exists');
+        let SQL = `DELETE FROM locations WHERE user_id=$1;`;
+        let values =[uID];
+        return client.query(SQL, values);
+      }})
+      .then(()=>{
+        let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id) VALUES ($1, $2, $3, $4, $5);`;
+        let values =[this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id];
+        return client.query(SQL, values);
+      })
 }
 
 function createEvent(request, response) {
-  let {date, start_time, title, description, user_id} = request.body;
+  let {date, start_time, title, description} = request.body;
   let SQL = `INSERT INTO events (date, start_time, title, description, user_id) VALUES ($1, $2, $3, $4, $5);`;
-  let values = [date, start_time, title, description, user_id];
+  let values = [date, start_time, title, description, 1];
 
   return client.query(SQL, values)
-    .then(response.render('pages/dashboard'))
+    .then( data =>{
+      getEvents(data, response);
+    })
     .catch(error => errorHandler(error));
 }
 
@@ -184,18 +197,10 @@ function getEvents(request, response) {
   return client.query(SQL, values)
     .then(result=> {
       if(result.rows.length > 0) {
-        response.render('pages/dashboard', {data, events: result.rows});
+        response.render('pages/events_page', {events: result.rows});
       } else {
-        response.render('pages/dashboard', 'No events saved.')
+        response.render('pages/events_page', {events: ''});
       }
     })
     .catch(error => errorHandler(error));
-}
-
-function requestLocation(request, response){
-  Location.fetchLocation(request.body.search)
-    .then(data=>{
-      console.log(data);
-      getAllInfo(data, response);
-    });
 }

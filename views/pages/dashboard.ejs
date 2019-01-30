@@ -7,10 +7,17 @@
   <%- include('../partials/header') %>
   </header>
   <body>
-    <div class="dashboard">
-    <%- include('../partials/location', {data}) %>
-    </div>  
 
+      <form action="/location" method="get">
+        <button type="submit">View API data</button>
+      </form>
+      <form action="/eventData" method="get">
+        <button type="submit">View Events</button>
+      </form>
+
+    <div class="dashboard">
+    <%- include('../partials/location', {location}) %>
+    </div>  
     
   </body>
 </html>
