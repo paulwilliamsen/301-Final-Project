@@ -62,7 +62,7 @@ function getAllInfo(request, response) {
 //------------------ Login Functions --------------------------------//
 
 function loadLogin (request, response) {
-  response.render('./index', {formaction: 'get'});
+  response.render('./index', {formaction: 'get', message: ''});
 }
 
 
@@ -80,7 +80,7 @@ function checkPassword (request, response){
         Location.lookupLocation(result.rows[0].id, response);
       }
       else{
-        response.redirect('/')
+        response.render('./index', {message: 'This username/password does not exist. Please create an account.'})
       }
     })
     .catch( () => {
@@ -143,15 +143,7 @@ function getLocation(id, response){
   let values = [id];
   client.query(SQL, values)
     .then(result => {
-      //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
-      response.render('pages/dashboard', {location: result.rows[0]})
-    })
-}
-
-
-      //console.log('line 128', result.rows);
       getAllInfo(result.rows[0], response);
-      //response.render('pages/dashboard', {location: result.rows[0]})
     })
     .catch(error => errorHandler(error));
 }
@@ -240,8 +232,9 @@ News.fetchNews = (query)=>{
         newsDataArray.push(newsData);
       }
       return newsDataArray;
+    })
 }
-          
+
 function News(data){
   this.name = data.source.name;
   this.author = data.author;
