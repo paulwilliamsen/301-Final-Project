@@ -34,14 +34,26 @@ app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.get('/location', requestLocation);
 app.post('/events', createEvent);
-
 app.get('/eventData', getEvents);
+app.get('/dashboard', getAllInfo);
+
 
 let uID = 0;
 //error handler
 function errorHandler(err, response){
   console.error(err);
   if(response) response.status(500).send('Something Broke!!!')
+}
+
+function getAllInfo(request, response) {
+  console.log('line 49 getallinfo req', request);
+  getWeather(request)
+    .then(result => {
+      console.log('line 52 result', result);
+      //let weather = result.map(day => )
+      response.render('pages/dashboard', {location : request, weather: result});
+    })
+    .catch(error => errorHandler(error));
 }
 
 
@@ -85,7 +97,7 @@ function addAccount(request, response) {
     .then(result => {
       console.log(result.rows)
       if(result.rows.length > 0){
-        console.log('username exists')
+        //console.log('username exists')
         response.redirect('/');
       } else{
         let {username, password} = request.body;
@@ -120,22 +132,23 @@ Location.lookupLocation = (id, response)=>{
 function requestLocation(request, response){
   Location.fetchLocation(request.body.search)
     .then(data=>{
-      response.render('pages/dashboard', {location: data});
-    });
+      getAllInfo(data, response);
+      //response.render('pages/dashboard', {location: data});
+    })
+    .catch(error => errorHandler(error));
 }
 
- function getLocation(id, response){
-   //search the database and return a value for that user_id.
-   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
-   let values = [id];
-   client.query(SQL, values)
-   .then(result => {
-     console.log('line 128', result.rows);
-     //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
-     response.render('pages/dashboard', {location: result.rows[0]})
-   })
- }
-
+function getLocation(id, response){
+  let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
+  let values = [id];
+  client.query(SQL, values)
+    .then(result => {
+      //console.log('line 128', result.rows);
+      getAllInfo(result.rows[0], response);
+      //response.render('pages/dashboard', {location: result.rows[0]})
+    })
+    .catch(error => errorHandler(error));
+}
 
  //When the button on the location page is submitted, go here. Ping the api.
 Location.fetchLocation = (query)=>{
@@ -166,23 +179,23 @@ function Location(query, response){
 }
 
 Location.prototype.save = function(){
-  console.log('line 162');
+  //console.log('line 162');
   let SQL = `SELECT * FROM locations WHERE user_id=$1;`;
   let values = [uID];
   return client.query(SQL, values)
     .then(results => {
-      console.log('line 167' ,results);
+      //console.log('line 167' ,results);
       if(results.rows.length > 0){
-        console.log('line 165, location data already exists');
+        //console.log('line 165, location data already exists');
         let SQL = `DELETE FROM locations WHERE user_id=$1;`;
         let values =[uID];
         return client.query(SQL, values);
       }})
-      .then(()=>{
-        let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id) VALUES ($1, $2, $3, $4, $5);`;
-        let values =[this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id];
-        return client.query(SQL, values);
-      })
+    .then(()=>{
+      let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id) VALUES ($1, $2, $3, $4, $5);`;
+      let values =[this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id];
+      return client.query(SQL, values);
+    })
 }
 
 function createEvent(request, response) {
@@ -210,4 +223,24 @@ function getEvents(request, response) {
       }
     })
     .catch(error => errorHandler(error));
+}
+
+function getWeather(request) {
+  console.log('getWeather request', request);
+  const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
+
+  return superagent.get(weatherData)
+    .then(results => {
+      const dailyWeather = results.body.daily.data.map(day => {
+        return new Weather(day);
+      });
+      console.log('dailyWeather', dailyWeather);
+      return (dailyWeather);
+    })
+    .catch(error => errorHandler(error));
+}
+
+function Weather(day) {
+  this.forecast = day.summary;
+  this.time = new Date(day.time * 1000).toString().slice(0,15);
 }
