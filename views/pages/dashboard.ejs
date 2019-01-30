@@ -7,17 +7,37 @@
   
   </header>
   <body>
+
       <h1> DAILY PLAN-IT</h1>
       <hr>
       <form action="/location" method="get">
         <button type="submit">Dashboard</button>
       </form>
+
       <form action="/eventData" method="get">
         <button type="submit">View Events</button>
       </form>
 
     <div class="dashboard">
-    <%- include('../partials/location', {location}) %>
+    <!-- <%- include('../partials/location', {location}) %> -->
+    <h2 class="location-name"><%= location.formatted_query %></h2>
+
+    <form action="/location" method="post">
+      <input type="text" name="search" required/>
+      <button type="submit">New Search</button>
+    </form>
+
+    <p><%= weather[0].time %></p>
+    <p><%= weather[0].forecast %></p>
+
+    <% news.forEach(story =>{ %>
+      <p><%= story.name %></p>
+      <p><%= story.author %></p>
+      <p><%= story.title %></p>
+      <p><%= story.description %></p>
+      <p><%= story.url %></p>
+      <p><%= story.publishedAt %></p>
+    <% }) %>
     </div>  
     <section class="footer">
     <%- include('../partials/footercontent') %>

@@ -5,21 +5,33 @@
 
   </head>
   <body>
+
     <h1>DAILY PLAN-IT</h1>
       <hr>
       <form action="/location" method="get">
         <button type="submit">Dashboard</button>
+
+      <form action="/dashboard" method="get">
+        <button type="submit">View Dashboard</button>
+
       </form>
-      <form action="/eventData" method="get">
+      
+      <!-- <form action="/eventData" method="get">
         <button type="submit">View Events</button>
-      </form>
+      </form> -->
 
     <form action="/events" method="post">
       <input type="date" name="date" required/>
       <input type="time" name="start_time"/>
+
       <input type="text" name="title" placeholder="Title" required/> 
       <input type="text" name="description" placeholder="Description"/> 
       <button type="submit"></button>
+
+      <input type="text" name="title" required/>
+      <input type="text" name="description"/>
+      <button>submit</button>
+
     </form>
     <% if(events.length) { %>
     <%- include('../partials/events', {events}) %>
