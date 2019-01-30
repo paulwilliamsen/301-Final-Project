@@ -1,5 +1,6 @@
-<h2><%= location.formatted_query %></h2>
+<h2 class="location-name"><%= location.formatted_query %></h2>
+
 <form action="/location" method="post">
   <input type="text" name="search" required/>
-  <button type="submit"></button>
+  <button type="submit">New Search</button>
 </form>

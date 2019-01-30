@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <%- include('../partials/head') %>
   </head>
+  <header>
+  <%- include('../partials/header') %>
+  </header>
   <body>
+
       <form action="/location" method="get">
         <button type="submit">View API data</button>
       </form>
@@ -11,9 +15,9 @@
         <button type="submit">View Events</button>
       </form>
 
-    
+    <div class="dashboard">
     <%- include('../partials/location', {location}) %>
-
+    </div>  
     
   </body>
 </html>
