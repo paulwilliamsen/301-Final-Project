@@ -7,17 +7,7 @@
   
   </header>
   <body>
-
-      <h1> DAILY PLAN-IT</h1>
-      <hr>
-      <form action="/location" method="get">
-        <button type="submit">Dashboard</button>
-      </form>
-
-      <form action="/eventData" method="get">
-        <button type="submit">View Events</button>
-      </form>
-
+    <%- include('../partials/header', uID) %>
     <div class="dashboard">
     
     <h2 class="location-name"><%= location.formatted_query %></h2>

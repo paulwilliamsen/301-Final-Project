@@ -35,12 +35,12 @@ app.get('/about', (request, response) => {
 app.post('/check-password', checkPassword);
 app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
-app.get('/location', requestLocation);
+app.post('/dashboard', loadDashboard);
 app.post('/events', createEvent);
 
 
 app.get('/eventData', getEvents);
-app.get('/dashboard', getAllInfo);
+// app.get('/dashboard', getAllInfo);
 
 
 let uID = 0;
@@ -50,12 +50,16 @@ function errorHandler(err, response){
   if(response) response.status(500).send('Something Broke!!!')
 }
 
-function getAllInfo(request, response) {
+
+function getAllInfo(request, response, id) {
+  // console.log('line 49 getallinfo req', request);
+
   getWeather(request)
     .then(result => {
       fetchNews(request)
         .then(story =>{
-          response.render('pages/dashboard', {location : request, weather: result, news: story});
+          // console.log('line 56', story)
+          response.render('pages/dashboard', {location : request, weather: result, news: story, uID: id});
         })
         .catch(error => errorHandler(error));
     })
@@ -100,7 +104,7 @@ function addAccount(request, response) {
   client.query(SQL, values)
     .then(result => {
       if(result.rows.length > 0){
-        response.redirect('/');
+        response.render('./index', {message: 'This username already exists. Please click Create Account and enter a different username.'})
       } else{
         let {username, password} = request.body;
         let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
@@ -132,12 +136,17 @@ Location.lookupLocation = (id, response)=>{
 };
 
 function requestLocation(request, response){
+  console.log('\n\n*******************\nline 137 request.body\n******************\n\n', request.body);
   Location.fetchLocation(request.body.search)
     .then(data=>{
       getAllInfo(data, response);
       //response.render('pages/dashboard', {location: data});
     })
     .catch(error => errorHandler(error));
+}
+function loadDashboard(request, response){
+  console.log('line 146', request.body.userId);
+  Location.lookupLocation(request.body.userId, response);
 }
 
 function getLocation(id, response){
@@ -146,7 +155,7 @@ function getLocation(id, response){
   let values = [id];
   client.query(SQL, values)
     .then(result => {
-      getAllInfo(result.rows[0], response);
+      getAllInfo(result.rows[0], response, id);
     })
     .catch(error => errorHandler(error));
 }
@@ -216,9 +225,9 @@ function getEvents(request, response) {
   return client.query(SQL, values)
     .then(result=> {
       if(result.rows.length > 0) {
-        response.render('pages/events_page', {events: result.rows});
+        response.render('pages/events_page', {events: result.rows, uID});
       } else {
-        response.render('pages/events_page', {events: ''});
+        response.render('pages/events_page', {events: '', uID});
       }
     })
     .catch(error => errorHandler(error));
@@ -250,6 +259,9 @@ function News(data){
 
 /*-----------Weather----------------*/
 function getWeather(request) {
+
+=======
+  // console.log('getWeather request', request);
 
   const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
   

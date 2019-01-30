@@ -1,5 +1,12 @@
-<nav>
-  <a href="./dashboard">Dashboard</a>
-  <a href="">About Our Team</a>
-  <a href="">Log Out</a>
-</nav>
+<h1>THE DAILY PLAN-IT</h1>
+<hr>
+
+<form action="/dashboard" method="post">
+  <input type="hidden" name="userId" value="<%- uID  %>">
+  <button type="submit">Dashboard</button>
+</form>
+
+<form action="/eventData" method="get">
+  <button type="submit">View Events</button>
+  <input type="hidden" name="userId" value="<%- uID  %>">
+</form>
