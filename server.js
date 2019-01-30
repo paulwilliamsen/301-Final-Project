@@ -102,7 +102,7 @@ function addAccount(request, response) {
   client.query(SQL, values)
     .then(result => {
       if(result.rows.length > 0){
-        response.redirect('/');
+        response.render('./index', {message: 'This username already exists. Please click Create Account and enter a different username.'})
       } else{
         let {username, password} = request.body;
         let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
