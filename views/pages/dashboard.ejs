@@ -8,15 +8,22 @@
   </header>
   <body>
 
-      <form action="/location" method="get">
-        <button type="submit">View API data</button>
-      </form>
+      
       <form action="/eventData" method="get">
         <button type="submit">View Events</button>
       </form>
 
     <div class="dashboard">
-    <%- include('../partials/location', {location}) %>
+    <!-- <%- include('../partials/location', {location}) %> -->
+    <h2 class="location-name"><%= location.formatted_query %></h2>
+
+    <form action="/location" method="post">
+      <input type="text" name="search" required/>
+      <button type="submit">New Search</button>
+    </form>
+
+    <p><%= weather[0].time %></p>
+    <p><%= weather[0].forecast %></p>
     </div>  
     
   </body>

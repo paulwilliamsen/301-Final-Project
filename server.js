@@ -37,12 +37,25 @@ app.post('/events', createEvent);
 app.get('/dashboard', requestNews);
 
 app.get('/eventData', getEvents);
+app.get('/dashboard', getAllInfo);
+
 
 let uID = 0;
 //error handler
 function errorHandler(err, response){
   console.error(err);
   if(response) response.status(500).send('Something Broke!!!')
+}
+
+function getAllInfo(request, response) {
+  console.log('line 49 getallinfo req', request);
+  getWeather(request)
+    .then(result => {
+      console.log('line 52 result', result);
+      //let weather = result.map(day => )
+      response.render('pages/dashboard', {location : request, weather: result});
+    })
+    .catch(error => errorHandler(error));
 }
 
 
@@ -117,11 +130,14 @@ Location.lookupLocation = (id, response)=>{
 function requestLocation(request, response){
   Location.fetchLocation(request.body.search)
     .then(data=>{
-      response.render('pages/dashboard', {location: data});
-    });
+      getAllInfo(data, response);
+      //response.render('pages/dashboard', {location: data});
+    })
+    .catch(error => errorHandler(error));
 }
 
 function getLocation(id, response){
+
   //search the database and return a value for that user_id.
   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
   let values = [id];
@@ -132,6 +148,13 @@ function getLocation(id, response){
     })
 }
 
+
+      //console.log('line 128', result.rows);
+      getAllInfo(result.rows[0], response);
+      //response.render('pages/dashboard', {location: result.rows[0]})
+    })
+    .catch(error => errorHandler(error));
+}
 
 //When the button on the location page is submitted, go here. Ping the api.
 Location.fetchLocation = (query)=>{
@@ -162,6 +185,7 @@ function Location(query, response){
 }
 
 Location.prototype.save = function(){
+
   let SQL = `SELECT * FROM locations WHERE user_id=$1;`;
   let values = [uID];
   return client.query(SQL, values)
@@ -204,6 +228,7 @@ function getEvents(request, response) {
     })
     .catch(error => errorHandler(error));
 }
+
 /*-----------news-----------------*/
 News.fetchNews = (query)=>{
   const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&from=2018-12-30&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`
@@ -215,10 +240,8 @@ News.fetchNews = (query)=>{
         newsDataArray.push(newsData);
       }
       return newsDataArray;
-    })
-    .catch(error => errorHandler(error));
 }
-
+          
 function News(data){
   this.name = data.source.name;
   this.author = data.author;
@@ -233,4 +256,24 @@ function requestNews(request, response){
     .then(data=>{
       response.render('pages/dashboard', {news: data});
     });
+}
+
+/*-----------Weather----------------*/
+function getWeather(request) {
+  console.log('getWeather request', request);
+  const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
+
+  return superagent.get(weatherData)
+    .then(results => {
+      const dailyWeather = results.body.daily.data.map(day => {
+        return new Weather(day);
+      });
+      console.log('dailyWeather', dailyWeather);
+      return (dailyWeather);
+    })
+    .catch(error => errorHandler(error));
+}
+function Weather(day) {
+  this.forecast = day.summary;
+  this.time = new Date(day.time * 1000).toString().slice(0,15);
 }
