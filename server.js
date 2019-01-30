@@ -51,12 +51,10 @@ function errorHandler(err, response){
 }
 
 function getAllInfo(request, response) {
-  console.log('line 49 getallinfo req', request);
   getWeather(request)
     .then(result => {
       fetchNews(request)
         .then(story =>{
-          console.log('line 56', story)
           response.render('pages/dashboard', {location : request, weather: result, news: story});
         })
         .catch(error => errorHandler(error));
@@ -228,7 +226,8 @@ function getEvents(request, response) {
 
 /*-----------news-----------------*/
 function fetchNews (query){
-  const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&from=2018-12-30&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`
+  const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&sortBy=publishedAt&keyword=${query.search_query}&sortBy=popularity&apiKey=${process.env.NEWS_API_KEY}`;
+  
   return superagent.get(allNewsData)
     .then(results => {
       let newsDataArray =[];
@@ -251,15 +250,14 @@ function News(data){
 
 /*-----------Weather----------------*/
 function getWeather(request) {
-  console.log('getWeather request', request);
-  const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
 
+  const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
+  
   return superagent.get(weatherData)
     .then(results => {
       const dailyWeather = results.body.daily.data.map(day => {
         return new Weather(day);
       });
-      console.log('dailyWeather', dailyWeather);
       return (dailyWeather);
     })
     .catch(error => errorHandler(error));
