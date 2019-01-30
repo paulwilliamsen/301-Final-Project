@@ -29,12 +29,15 @@ app.use(
   })
 );
 app.get('/', loadLogin);
+app.get('/about', (request, response) => {
+  response.render('pages/about')
+});
 app.post('/check-password', checkPassword);
 app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.get('/location', requestLocation);
 app.post('/events', createEvent);
-app.get('/dashboard', requestNews);
+
 
 app.get('/eventData', getEvents);
 app.get('/dashboard', getAllInfo);
@@ -51,9 +54,12 @@ function getAllInfo(request, response) {
   console.log('line 49 getallinfo req', request);
   getWeather(request)
     .then(result => {
-      console.log('line 52 result', result);
-      //let weather = result.map(day => )
-      response.render('pages/dashboard', {location : request, weather: result});
+      fetchNews(request)
+        .then(story =>{
+          console.log('line 56', story)
+          response.render('pages/dashboard', {location : request, weather: result, news: story});
+        })
+        .catch(error => errorHandler(error));
     })
     .catch(error => errorHandler(error));
 }
@@ -137,7 +143,6 @@ function requestLocation(request, response){
 }
 
 function getLocation(id, response){
-
   //search the database and return a value for that user_id.
   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
   let values = [id];
@@ -197,7 +202,7 @@ Location.prototype.save = function(){
 function createEvent(request, response) {
   let {date, start_time, title, description} = request.body;
   let SQL = `INSERT INTO events (date, start_time, title, description, user_id) VALUES ($1, $2, $3, $4, $5);`;
-  let values = [date, start_time, title, description, 1];
+  let values = [date, start_time, title, description, uID];
 
   return client.query(SQL, values)
     .then( data =>{
@@ -208,7 +213,7 @@ function createEvent(request, response) {
 
 function getEvents(request, response) {
   let SQL = `SELECT * FROM events WHERE user_id=$1;`;
-  let values = [1];
+  let values = [uID];
 
   return client.query(SQL, values)
     .then(result=> {
@@ -222,7 +227,7 @@ function getEvents(request, response) {
 }
 
 /*-----------news-----------------*/
-News.fetchNews = (query)=>{
+function fetchNews (query){
   const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&from=2018-12-30&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`
   return superagent.get(allNewsData)
     .then(results => {
@@ -242,13 +247,6 @@ function News(data){
   this.description = data.description;
   this.url = data.url;
   this.publishedAt = data.publishedAt;
-};
-
-function requestNews(request, response){
-  News.fetchNews(request.body.search)
-    .then(data=>{
-      response.render('pages/dashboard', {news: data});
-    });
 }
 
 /*-----------Weather----------------*/
