@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+      <%- include('../partials/head') %>
 
   </head>
   <body>
+    <h1>DAILY PLAN-IT</h1>
+      <hr>
       <form action="/location" method="get">
-        <button type="submit">View API data</button>
+        <button type="submit">Dashboard</button>
       </form>
       <form action="/eventData" method="get">
         <button type="submit">View Events</button>
@@ -14,14 +17,18 @@
     <form action="/events" method="post">
       <input type="date" name="date" required/>
       <input type="time" name="start_time"/>
-      <input type="text" name="title" required/>
-      <input type="text" name="description"/>
+      <input type="text" name="title" placeholder="Title" required/> 
+      <input type="text" name="description" placeholder="Description"/> 
       <button type="submit"></button>
     </form>
     <% if(events.length) { %>
     <%- include('../partials/events', {events}) %>
     <% }; %>
     
+    <section class="footer">
+    <%- include('../partials/footercontent') %>
+    </section>
   </body>
+
 </html>
 
