@@ -4,11 +4,16 @@
     <%- include('../partials/head') %>
   </head>
   <header>
-  <%- include('../partials/header') %>
+  
   </header>
   <body>
 
-      
+      <h1> DAILY PLAN-IT</h1>
+      <hr>
+      <form action="/location" method="get">
+        <button type="submit">Dashboard</button>
+      </form>
+
       <form action="/eventData" method="get">
         <button type="submit">View Events</button>
       </form>
@@ -34,7 +39,9 @@
       <p><%= story.publishedAt %></p>
     <% }) %>
     </div>  
-    
+    <section class="footer">
+    <%- include('../partials/footercontent') %>
+    </section>
   </body>
 </html>
 
