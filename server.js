@@ -34,7 +34,7 @@ app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.get('/location', requestLocation);
 app.post('/events', createEvent);
-app.get('/dashboard', requestNews);
+
 
 app.get('/eventData', getEvents);
 app.get('/dashboard', getAllInfo);
@@ -51,9 +51,12 @@ function getAllInfo(request, response) {
   console.log('line 49 getallinfo req', request);
   getWeather(request)
     .then(result => {
-      console.log('line 52 result', result);
-      //let weather = result.map(day => )
-      response.render('pages/dashboard', {location : request, weather: result});
+      fetchNews(request)
+        .then(story =>{
+          console.log('line 56', story)
+          response.render('pages/dashboard', {location : request, weather: result, news: story});
+        })
+        .catch(error => errorHandler(error));
     })
     .catch(error => errorHandler(error));
 }
@@ -143,15 +146,9 @@ function getLocation(id, response){
   let values = [id];
   client.query(SQL, values)
     .then(result => {
-      //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
-      response.render('pages/dashboard', {location: result.rows[0]})
-    })
-}
-
-
-      //console.log('line 128', result.rows);
       getAllInfo(result.rows[0], response);
-      //response.render('pages/dashboard', {location: result.rows[0]})
+      //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
+      // response.render('pages/dashboard', {location: result.rows[0]})
     })
     .catch(error => errorHandler(error));
 }
@@ -230,7 +227,7 @@ function getEvents(request, response) {
 }
 
 /*-----------news-----------------*/
-News.fetchNews = (query)=>{
+function fetchNews (query){
   const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&from=2018-12-30&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`
   return superagent.get(allNewsData)
     .then(results => {
@@ -240,8 +237,9 @@ News.fetchNews = (query)=>{
         newsDataArray.push(newsData);
       }
       return newsDataArray;
+    })
 }
-          
+
 function News(data){
   this.name = data.source.name;
   this.author = data.author;
@@ -249,13 +247,6 @@ function News(data){
   this.description = data.description;
   this.url = data.url;
   this.publishedAt = data.publishedAt;
-};
-
-function requestNews(request, response){
-  News.fetchNews(request.body.search)
-    .then(data=>{
-      response.render('pages/dashboard', {news: data});
-    });
 }
 
 /*-----------Weather----------------*/

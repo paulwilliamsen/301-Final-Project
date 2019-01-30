@@ -24,6 +24,15 @@
 
     <p><%= weather[0].time %></p>
     <p><%= weather[0].forecast %></p>
+
+    <% news.forEach(story =>{ %>
+      <p><%= story.name %></p>
+      <p><%= story.author %></p>
+      <p><%= story.title %></p>
+      <p><%= story.description %></p>
+      <p><%= story.url %></p>
+      <p><%= story.publishedAt %></p>
+    <% }) %>
     </div>  
     
   </body>
