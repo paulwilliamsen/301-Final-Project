@@ -34,6 +34,8 @@ app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.get('/location', requestLocation);
 app.post('/events', createEvent);
+app.get('/dashboard', requestNews);
+
 app.get('/eventData', getEvents);
 app.get('/dashboard', getAllInfo);
 
@@ -78,12 +80,10 @@ function checkPassword (request, response){
         Location.lookupLocation(result.rows[0].id, response);
       }
       else{
-        console.log('here in else')
         response.redirect('/')
       }
     })
     .catch( () => {
-      console.log('here in catch')
       response.render('./index')
     });
 }
@@ -95,9 +95,7 @@ function addAccount(request, response) {
 
   client.query(SQL, values)
     .then(result => {
-      console.log(result.rows)
       if(result.rows.length > 0){
-        //console.log('username exists')
         response.redirect('/');
       } else{
         let {username, password} = request.body;
@@ -139,10 +137,18 @@ function requestLocation(request, response){
 }
 
 function getLocation(id, response){
+
+  //search the database and return a value for that user_id.
   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
   let values = [id];
   client.query(SQL, values)
     .then(result => {
+      //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
+      response.render('pages/dashboard', {location: result.rows[0]})
+    })
+}
+
+
       //console.log('line 128', result.rows);
       getAllInfo(result.rows[0], response);
       //response.render('pages/dashboard', {location: result.rows[0]})
@@ -150,7 +156,7 @@ function getLocation(id, response){
     .catch(error => errorHandler(error));
 }
 
- //When the button on the location page is submitted, go here. Ping the api.
+//When the button on the location page is submitted, go here. Ping the api.
 Location.fetchLocation = (query)=>{
   const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
   return superagent.get(geoData)
@@ -179,14 +185,12 @@ function Location(query, response){
 }
 
 Location.prototype.save = function(){
-  //console.log('line 162');
+
   let SQL = `SELECT * FROM locations WHERE user_id=$1;`;
   let values = [uID];
   return client.query(SQL, values)
     .then(results => {
-      //console.log('line 167' ,results);
       if(results.rows.length > 0){
-        //console.log('line 165, location data already exists');
         let SQL = `DELETE FROM locations WHERE user_id=$1;`;
         let values =[uID];
         return client.query(SQL, values);
@@ -225,6 +229,36 @@ function getEvents(request, response) {
     .catch(error => errorHandler(error));
 }
 
+/*-----------news-----------------*/
+News.fetchNews = (query)=>{
+  const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&from=2018-12-30&sortBy=publishedAt&apiKey=${process.env.NEWS_API_KEY}`
+  return superagent.get(allNewsData)
+    .then(results => {
+      let newsDataArray =[];
+      for(let i = 0; i<8; i++){
+        let newsData = new News(results.body.articles[i]);
+        newsDataArray.push(newsData);
+      }
+      return newsDataArray;
+}
+          
+function News(data){
+  this.name = data.source.name;
+  this.author = data.author;
+  this.title = data.title;
+  this.description = data.description;
+  this.url = data.url;
+  this.publishedAt = data.publishedAt;
+};
+
+function requestNews(request, response){
+  News.fetchNews(request.body.search)
+    .then(data=>{
+      response.render('pages/dashboard', {news: data});
+    });
+}
+
+/*-----------Weather----------------*/
 function getWeather(request) {
   console.log('getWeather request', request);
   const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
@@ -239,7 +273,6 @@ function getWeather(request) {
     })
     .catch(error => errorHandler(error));
 }
-
 function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0,15);
