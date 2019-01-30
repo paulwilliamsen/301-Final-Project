@@ -143,24 +143,16 @@ function requestLocation(request, response){
 }
 
 function getLocation(id, response){
-
   //search the database and return a value for that user_id.
-
   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
   let values = [id];
   client.query(SQL, values)
     .then(result => {
-
-      console.log('line 128', result.rows);
-      response.render('pages/dashboard', {location: result.rows[0]})
-    })
-
       getAllInfo(result.rows[0], response);
       //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
       // response.render('pages/dashboard', {location: result.rows[0]})
     })
     .catch(error => errorHandler(error));
-
 }
 
 //When the button on the location page is submitted, go here. Ping the api.
