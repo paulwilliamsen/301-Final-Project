@@ -29,6 +29,9 @@ app.use(
   })
 );
 app.get('/', loadLogin);
+app.get('/about', (request, response) => {
+  response.render('pages/about')
+});
 app.post('/check-password', checkPassword);
 app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
@@ -120,15 +123,15 @@ function requestLocation(request, response){
     });
 }
 
- function getLocation(id, response){
-   let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
-   let values = [id];
-   client.query(SQL, values)
-   .then(result => {
-     console.log('line 128', result.rows);
-     response.render('pages/dashboard', {location: result.rows[0]})
-   })
- }
+function getLocation(id, response){
+  let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
+  let values = [id];
+  client.query(SQL, values)
+    .then(result => {
+      console.log('line 128', result.rows);
+      response.render('pages/dashboard', {location: result.rows[0]})
+    })
+}
 
 Location.fetchLocation = (query)=>{
   const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
@@ -171,11 +174,11 @@ Location.prototype.save = function(){
         let values =[uID];
         return client.query(SQL, values);
       }})
-      .then(()=>{
-        let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id) VALUES ($1, $2, $3, $4, $5);`;
-        let values =[this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id];
-        return client.query(SQL, values);
-      })
+    .then(()=>{
+      let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id) VALUES ($1, $2, $3, $4, $5);`;
+      let values =[this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id];
+      return client.query(SQL, values);
+    })
 }
 
 function createEvent(request, response) {
