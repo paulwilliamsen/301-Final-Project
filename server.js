@@ -34,7 +34,6 @@ app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.get('/location', requestLocation);
 app.post('/events', createEvent);
-// app.get('/dashboard', getAllInfo);
 
 app.get('/eventData', getEvents);
 
@@ -52,14 +51,18 @@ function loadLogin (request, response) {
   response.render('./index', {formaction: 'get'});
 }
 
+
+//Once the user attempts to login, go here.
 function checkPassword (request, response){
   let SQL = `SELECT * FROM users WHERE username=$1 AND password=$2;`;
   let values = [request.body.username, request.body.password];
 
   client.query(SQL, values)
     .then(result => {
+      //check the database for the username password combo.
       if(result.rows.length > 0){
         uID = result.rows[0].id;
+        //If the user exists, go to lookupLocation then check for a location in the database
         Location.lookupLocation(result.rows[0].id, response);
       }
       else{
@@ -101,12 +104,13 @@ Location.lookupLocation = (id, response)=>{
   const values = [id];
   client.query(SQL, values)
     .then(results=>{
-      console.log('check DB FOR existing location:', results.rows);
+      //check the database for any data for that specific user.
       if(results.rows.length > 0){
-        console.log('in lookup (106)');
+        //if there is a value in the database at that user_id, get the location.
         getLocation(results.rows[0].user_id, response);
       }
       else{
+        //if there is no location data, then render the page for the user to enter a location.
         response.render('pages/location_page');
       }
     })
@@ -121,15 +125,19 @@ function requestLocation(request, response){
 }
 
  function getLocation(id, response){
+   //search the database and return a value for that user_id.
    let SQL =`SELECT * FROM locations WHERE user_id=$1;`;
    let values = [id];
    client.query(SQL, values)
    .then(result => {
      console.log('line 128', result.rows);
+     //once you recieve the data, render the dashboard page with the results(the location data) passed through. Instead of passing htrough the results, it could then call a function to work on the next api (weather?)
      response.render('pages/dashboard', {location: result.rows[0]})
    })
  }
 
+
+ //When the button on the location page is submitted, go here. Ping the api.
 Location.fetchLocation = (query)=>{
   const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
   return superagent.get(geoData)
@@ -139,10 +147,9 @@ Location.fetchLocation = (query)=>{
       }
       else{
         let location = new Location(query, response.body.results[0])
-        console.log('response.body line 142', response.body.results[0])
+        //once it get the data from the api, go to the save function. That is where it checks for existing data, then replaces it if need be.
         return location.save()
           .then(() =>{
-            console.log('line 145 location', location);
             return location;
           })
       }
