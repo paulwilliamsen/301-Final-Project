@@ -281,6 +281,9 @@ function getWeather(request) {
 function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
+  this.high = day.temperatureHigh;
+  this.low = day.temperatureLow;
+  
   let iconList = {
     'clear-day': './icons/sunny.png',
     'clear-night':'./icons/clearnight.png',
@@ -293,6 +296,8 @@ function Weather(day) {
     'partly-cloudy-day':'./icons/partlycloudyday.png',
     'partly-cloudy-night':'./icons/partlycloudyday.png'
   }
+  console.log('temp', this.temp);
+
   this.icon = iconList[day.icon];
 }
 
