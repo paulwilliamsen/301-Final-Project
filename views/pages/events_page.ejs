@@ -5,15 +5,12 @@
 
   </head>
   <body id="events-body">
-
+    <%- include('../partials/header', uID)%>
     <h1>DAILY PLAN-IT</h1>
       <hr>
       <form action="/location" method="get">
         <button type="submit">View Dashboard</button>
       </form>
-      <!-- <form action="/eventData" method="get">
-        <button type="submit">View Events</button>
-      </form> -->
 
     <form action="/events" method="post">
       <input type="date" name="date" required/>
