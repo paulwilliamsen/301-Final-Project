@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head')%>
+</head>
+<body>
+    <%- include('../partials/header', uID)%>
+    <% info.date = new Date().toISOString().substring(0, 10); %>
+    <form action="/update/<%= info.id %>" method='post'>
+      <input type="hidden" name="_method" value='put'>
+      <input type="date" name="date" value="<%- info.date   %>" required/>
+      <input type="time" name="start_time" value="<%- info.start_time  %>"/>
+
+      <input type="text" name="title" placeholder="Title" value="<%- info.title  %>" required/> 
+      <input type="text" name="description" placeholder="Description" value="<%- info.description  %>"/> 
+      <button type="submit">Submit</button>
+    </form>
+    <%- include('../partials/footer', uID)%>
+</body>
+</html>
