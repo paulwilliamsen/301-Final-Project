@@ -1,98 +1,96 @@
 body {
-  position: relative;
+  display: flex;
   background-color: rgba(222, 110, 13, 0.75);
   text-align: center;
 }
 
-h1 {
-  font-size: 8em;
-  font-family: 'Bungee Shade', cursive;
-  color: white;
-  padding: 10px;
-  
+#index-body {
+  flex-direction: column;
 }
 
-.original-form {
+#dashboard-body {
+  flex-direction: column;
+}
+
+#dashboard-body h2 {
+  margin: 1em;
+}
+
+#dashboard-body form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+#dashboard-body input{
+  margin: 1.5em;
+  padding: .6em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+h1 {
+  font-size: 3.5em;
+  font-family: 'Bungee Shade', cursive;
   color: white;
-  padding-bottom: 60px;
-  padding-top: 10px;
-  font-size: 1.5em;
+  padding: .5em;
+  border-bottom: 1em, solid, white;
   
 }
 
 .original-form h2 {
-  margin-bottom: 10px;
-  font-size: 5.5em;
-  padding-bottom: 40px;
+  margin-bottom: .3em;
+  font-size: 1.5em;
+  padding-bottom: 1em;
 }
 
 .visible-form h2 {
-  margin-bottom: 10px;
-  font-size: 5.5em;
-  padding-bottom: 40px;
-  
+  margin-bottom: .3em;
+  font-size: 1.5em;
+  padding-bottom: 1em;
+  color: green;
 }
 
-input {
-  margin: 10px;
-  padding: 10px;
-  max-width:900px;
-  font-size: 6.5em;
-  background-color: whitesmoke;
-  border-radius: 10px;
-  box-shadow: 4px 4px 4px black;
-  
-}
 
-.visible-form input {
-  margin: 10px;
-  padding: 10px;
-  max-width:900px;
-  font-size: 6.5em;
+/* input:focus {
+  outline: black;
+  
+} */
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: white;
-  border-radius: 10px;
-  box-shadow: 4px 4px 4px black;
-  
-  
-}
-
-input:focus {
-  /* outline: black; */
-  
-}
-
-.visible-form {
-  color: black;
-  padding-top: 10px;
   padding-bottom: 60px;
+  padding-top: 10px;
   font-size: 1.5em;
 
   
 }
 
-.visible-form button {
-  width: 17em;
-  padding: 10px;
-  margin-top: 15px;
-  font-size: 2em;
-  border-radius: 20px;
-  outline: none;
-  color: black;
+.login input{
+  margin: 1.5em;
+  padding: .6em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
 }
 
 button {
-  width: 17em;
-  padding: 10px;
+  width: 15em;
+  padding: .6em;
   margin-top: 15px;
-  font-size: 2em;
+  font-size: 1em;
   border-radius: 20px;
   outline: none;
-  background-color: white;
-
-}
-
-.name, .password {
-  font-size: 4em;
+  color: black;
 }
 
 h3 {
@@ -100,17 +98,10 @@ h3 {
   font-family: 'Bungee Shade', cursive;
 }
 
-.location-button {
-  border-radius: 10px;
-  margin: 5px;
-  padding: 5px;
-  font-size: 1.5em;
-  
-}
 
 .location-name {
   color:white;
-  font-size: 5em;
+  font-size: 2em;
 }
 
 a {
@@ -125,22 +116,49 @@ a {
 }
 
 
-p {
+/* p {
   color: white;
   font-size: 2em;
   text-align: left;
-  padding: 20px;
+} */
+
+p.error-message {
+  color: rgb(88, 18, 18);
+  font-size: 1em;
+  text-align: center;
+  padding: 1em;
 }
 
-hr {
+#weather-section {
+  background-color: whitesmoke;
+  color: black;
+  margin: 1.5em;
+}
+
+.news-section {
+  background-color: whitesmoke;
+  color: black;
+  margin: 1.5em;
+}
+
+#weather-section p {
+  font-size: 1.5em;
+  text-align: left;
+  padding: .2em;
+}
+
+.news-section p {
+  font-size: 1em;
+  text-align: left;
+  padding: .2em;
+}
+
+/* hr { 
   background-color: white;
   padding: 5px;
-  
-}
+} */
 
 .footer {
-  position:absolute;
-  bottom:0;
   width:100%;
   height:200px; 
   background: #333333;
