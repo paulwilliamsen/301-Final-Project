@@ -225,7 +225,7 @@ function createEvent(request, response) {
 }
 
 function getEvents(request, response) {
-  let SQL = `SELECT * FROM events WHERE user_id=$1;`;
+  let SQL = `SELECT * FROM events WHERE user_id=$1 ORDER BY date ASC, start_time ASC;`;
   let values = [uID];
 
   return client.query(SQL, values)

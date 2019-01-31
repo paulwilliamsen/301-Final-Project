@@ -35,7 +35,10 @@
 }
 
 #events-display {
-  margin: 0;
+  display: flex;
+  justify-content: center;
+  margin: 2em 0 4em;
+  flex-wrap: wrap;
 }
 
 #events-display p {
@@ -78,6 +81,6 @@
   margin: 3em;
   color: white;
 }
-#about-body a:visited{
-  color: rgb(0, 0, 0);
+#about-body a:hover{
+  color: black;
 }
