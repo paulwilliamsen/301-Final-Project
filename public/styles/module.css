@@ -42,7 +42,7 @@ p.error-message {
 }
 
 .location-form input {
-  margin: 1.5em;
+  /* margin: 1.5em; */
   padding: 1em;
   width: 15em;
   font-size: 1em;
@@ -54,7 +54,7 @@ p.error-message {
 /* ------ Dashboard --------- */
 
 #dashboard-body h2 {
-  margin: 1em;
+  margin-top: .5em;
 }
 
 #dashboard-body input{
