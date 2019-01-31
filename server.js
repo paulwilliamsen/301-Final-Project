@@ -336,7 +336,7 @@ function getTraffic(request){
     .then(results =>{
       let trafficArray=[];
       for(let i = 0; i<results.body.incidents.length; i++){
-        let trafficData = new Traffic(results.body.incidents[i])
+        let trafficData = new Traffic(results.body.incidents[i]);
         trafficArray.push(trafficData);
       }
       return trafficArray;
