@@ -1,8 +1,8 @@
-#The Daily Plan-it
+# The Daily Plan-it
 
 ![Planet](https://images.unsplash.com/photo-1454789548928-9efd52dc4031?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=80)
 
-##Team Members:
+## Team Members:
  
 >**Chris Merritt**
 
