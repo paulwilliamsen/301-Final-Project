@@ -68,7 +68,6 @@ p.error-message {
 
 #weather-section {
   color: white;
-  font-family: 'Baloo', cursive;
   margin: 0 auto;
   width: 80%;
 }
@@ -88,6 +87,7 @@ p.error-message {
 }
 #weather-section p {
   font-size: 1.5em;
+  font-family: 'Baloo', cursive;
   text-align: center;
   padding: .2em;
 }
