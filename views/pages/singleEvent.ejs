@@ -19,6 +19,10 @@
       <input type="hidden" name="_method" value='delete'/>
       <button type="submit">Delete</button>
     </form>
-    <%- include('../partials/footer', uID)%>
+
+    <div class="hidden-div"></div>
+    <section class="footer">
+      <%- include('../partials/footercontent', {uID}) %>
+    </section>
 </body>
 </html>

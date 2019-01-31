@@ -1,7 +1,11 @@
 body {
   display: flex;
   flex-direction: column;
-  background-color: rgba(222, 110, 13, 0.75);
+  background-image: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1504&q=80");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
   text-align: center;
 }
 

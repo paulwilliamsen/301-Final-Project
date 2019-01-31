@@ -51,11 +51,6 @@ p.error-message {
   margin: 1em;
 }
 
-.location-name {
-  color:white;
-  font-size: 2em;
-}
-
 #dashboard-body input{
   margin: 1.5em;
   padding: .6em;
@@ -67,21 +62,23 @@ p.error-message {
 }
 
 #weather-section {
-  background-color: whitesmoke;
-  color: black;
-  margin: 1.5em;
+  color: white;
+  margin: 0 auto;
+  width: 80%;
+}
+#weather-section h2{
+  font-size: 4em;
+}
+#weather-section p {
+  font-size: 1.5em;
+  text-align: center;
+  padding: .2em;
 }
 
 .news-section {
-  background-color: whitesmoke;
+  background-color: rgba(255, 255, 255, 0.89);
   color: black;
   margin: 1.5em;
-}
-
-#weather-section p {
-  font-size: 1.5em;
-  text-align: left;
-  padding: .2em;
 }
 
 .news-section p {

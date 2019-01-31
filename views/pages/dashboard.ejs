@@ -5,17 +5,16 @@
   </head>
   <body id="dashboard-body">
     <%- include('../partials/header', uID) %>
-    
-    <h2 class="location-name"><%= location.formatted_query %></h2>
 
     <form action="/location" method="post">
-      <input type="text" name="search" required/>
+      <input type="text" name="search" placeholder="Enter a new location" required/>
       <button type="submit">New Search</button>
     </form>
     <section id="weather-section">
+      <h2 class="location-name"><%= location.formatted_query %></h2>
+      <img src="<%= weather[0].icon %>"> </img>
       <p><%= weather[0].time %></p>
       <p><%= weather[0].forecast %></p>
-      <img src="<%= weather[0].icon %>"> </img>
     </section>
       <% news.forEach(story =>{ %>
         <section class="news-section">
