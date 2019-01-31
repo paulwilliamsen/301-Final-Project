@@ -18,6 +18,11 @@
   color: green;
 }
 
+.name, .password {
+  font-family: 'Baloo', cursive;
+
+}
+
 .login input{
   margin: 1.5em;
   padding: .6em;
@@ -70,6 +75,7 @@ p.error-message {
 #weather-section h2{
   font-size: 4em;
 }
+
 .news-section {
   background-color: rgba(255, 255, 255, 0.89);
   color: black;
@@ -81,6 +87,7 @@ p.error-message {
 }
 #weather-section p {
   font-size: 1.5em;
+  font-family: 'Baloo', cursive;
   text-align: center;
   padding: .2em;
 }

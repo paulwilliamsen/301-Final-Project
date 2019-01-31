@@ -41,3 +41,43 @@
 #events-display p {
   padding: .3em;
 }
+
+/* ----------About Page --------- */
+
+#about-body{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+  margin: 1em;
+}
+#about-body section{
+ background-color: rgba(196, 222, 245, 0.685);
+ border-radius: 5px;
+ width: 20em;
+ margin: 1em;
+ padding: 1em;
+}
+#about-body img{
+  border-radius: 50%;
+  height: 20em;
+  width: 20em;
+  border: 5px solid rgb(0, 0, 0);
+}
+#about-body h6{
+  font-size: 2em;
+  margin: 1em;
+}
+#about-body p{
+  text-align: left;
+  margin: 1em;
+  font-size: 1.5em;
+  height: 18em;
+}
+#about-body a{
+  margin: 3em;
+  color: white;
+}
+#about-body a:visited{
+  color: rgb(0, 0, 0);
+}
