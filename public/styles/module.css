@@ -66,19 +66,23 @@ p.error-message {
   margin: 0 auto;
   width: 80%;
 }
+
 #weather-section h2{
   font-size: 4em;
-}
-#weather-section p {
-  font-size: 1.5em;
-  text-align: center;
-  padding: .2em;
-}
 
 .news-section {
   background-color: rgba(255, 255, 255, 0.89);
   color: black;
   margin: 1.5em;
+  padding: 3vw;
+  box-shadow: 5px 10px black;
+  border-radius: 5px;
+
+}
+#weather-section p {
+  font-size: 1.5em;
+  text-align: center;
+  padding: .2em;
 }
 
 .news-section p {

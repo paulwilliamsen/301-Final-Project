@@ -18,6 +18,7 @@ h1 {
   font-family: 'Bungee Shade', cursive;
   color: white;
   padding: .5em;
+  text-shadow: 2px 2px black;
 }
 
 h3 {
