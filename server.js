@@ -189,8 +189,8 @@ function Location(query, response) {
   this.user_id = uID;
   this.lat = response.geometry.viewport.northeast.lat;
   this.lng = response.geometry.viewport.northeast.lng;
-  this.latSW = response.geometry.viewport.southwest.lat;
-  this.lngSW = response.geometry.viewport.southwest.lng;
+  this.latsw = response.geometry.viewport.southwest.lat;
+  this.lngsw = response.geometry.viewport.southwest.lng;
 }
 
 Location.prototype.save = function () {
