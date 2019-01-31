@@ -19,15 +19,16 @@
       <p>Low: <%= weather[0].low %></p>
 
     </section>
-    <% traffic.forEach(incident =>{ %>
-      <section class="news-section">
-        <img src='<%= incident.iconURL%>'></img>
-        <div class="news-text">
-          <p><%= incident.fullDesc %></p>
-        </div>
-      </section> 
-    <% }) %>
-      <% news.forEach(story =>{ %>
+
+
+
+    <section class="expand-one">
+      <button id="expand-one-btn">
+        <section class="expand-btn-text">Today's Top Stories</section>
+        <section class="expand-btn-plus">-</section>
+      </button>
+      <section class="content-one">
+        <% news.forEach(story =>{ %>
         <section class="news-section">
           <img src='<%= story.image_url%>'></img>
           <div class="news-text">
@@ -38,9 +39,23 @@
           </div>
         </section> 
       <% }) %>
+      </section>
+  </section>
+  
+   <% traffic.forEach(incident =>{ %>
+      <section class="news-section">
+        <img src='<%= incident.iconURL%>'></img>
+        <div class="news-text">
+          <p><%= incident.fullDesc %></p>
+        </div>
+      </section> 
+    <% }) %>
+
+
       <div class="hidden-div"></div>
     <section class="footer">
       <%- include('../partials/footercontent', {uID}) %>
+      <%- include('../partials/footer') %>
     </section>
   </body>
 </html>
