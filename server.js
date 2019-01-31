@@ -40,6 +40,7 @@ app.post('/events', createEvent);
 app.get('/pages/:event_id', getOneEvent);
 app.put('/update/:id', updateEvent);
 app.get('/eventData', getEvents);
+app.delete('/delete/:event_id', deleteEvent);
 // app.get('/dashboard', getAllInfo);
 
 
@@ -285,12 +286,12 @@ function getOneEvent(request, response){
   let values = [request.params.event_id ];
 
   return client
-  .query(SQL, values)
-  .then(result => {
-    console.log('ln 288', result.rows);
-    return response.render('pages/singleEvent', {info: result.rows[0], uID});
-  })
-  .catch(err => handleError(err, response));
+    .query(SQL, values)
+    .then(result => {
+      console.log('ln 288', result.rows);
+      return response.render('pages/singleEvent', {info: result.rows[0], uID});
+    })
+    .catch(error => errorHandler(error));
 }
 
 function updateEvent(request, response){
@@ -301,5 +302,14 @@ function updateEvent(request, response){
   client
     .query(SQL, values)
     .then(response.redirect('/eventData'))
-    .catch(err=> handleError(err, response));
-  }
+    .catch(error => errorHandler(error));
+}
+
+function deleteEvent(request, response){
+  let SQL =`DELETE FROM events WHERE id=$1;`;
+  let values = [request.params.event_id];
+
+  client.query(SQL, values)
+    .then(response.redirect('/eventData'))
+    .catch(error => errorHandler(error));
+}
