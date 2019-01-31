@@ -255,6 +255,7 @@ function News(data){
   this.description = data.description;
   this.url = data.url;
   this.publishedAt = data.publishedAt;
+  this.image_url = data.urlToImage;
 }
 
 /*-----------Weather----------------*/

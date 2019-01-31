@@ -3,12 +3,8 @@
   <head>
     <%- include('../partials/head') %>
   </head>
-  <header>
-  
-  </header>
-  <body>
+  <body id="dashboard-body">
     <%- include('../partials/header', uID) %>
-    <div class="dashboard">
     
     <h2 class="location-name"><%= location.formatted_query %></h2>
 
@@ -16,21 +12,24 @@
       <input type="text" name="search" required/>
       <button type="submit">New Search</button>
     </form>
-
-    <p><%= weather[0].time %></p>
-    <p><%= weather[0].forecast %></p>
-
-    <% news.forEach(story =>{ %>
-      <p><%= story.name %></p>
-      <p><%= story.author %></p>
-      <p><%= story.title %></p>
-      <p><%= story.description %></p>
-      <p><%= story.url %></p>
-      <p><%= story.publishedAt %></p>
-    <% }) %>
-    </div>  
+    <section id="weather-section">
+      <p><%= weather[0].time %></p>
+      <p><%= weather[0].forecast %></p>
+    </section>
+      <% news.forEach(story =>{ %>
+        <section class="news-section">
+          <img src='<%= story.image_url%>'></img>
+          <div class="news-text">
+            <p><a href="<%= story.url %>"><%= story.title %></a></p>
+            <p><%= story.author %></p>
+            <p><%= story.description %></p>
+            <p><%= story.name %></p>
+            <p><%= story.publishedAt %></p>
+          </div>
+        </section> 
+      <% }) %>
     <section class="footer">
-    <%- include('../partials/footercontent') %>
+      <%- include('../partials/footercontent') %>
     </section>
   </body>
 </html>
