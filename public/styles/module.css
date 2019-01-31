@@ -76,6 +76,9 @@ p.error-message {
   background-color: whitesmoke;
   color: black;
   margin: 1.5em;
+  padding: 3vw;
+  box-shadow: 5px 10px black;
+  border-radius: 5px;
 }
 
 #weather-section p {
