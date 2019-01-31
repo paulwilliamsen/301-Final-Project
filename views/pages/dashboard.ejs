@@ -16,6 +16,14 @@
       <p><%= weather[0].time %></p>
       <p><%= weather[0].forecast %></p>
     </section>
+
+
+    <section class="expand-one">
+      <button id="expand-one-btn">
+        <section class="expand-btn-text">Today's Top Stories</section>
+        <section class="expand-btn-plus">-</section>
+      </button>
+      <section class="content-one">
       <% news.forEach(story =>{ %>
         <section class="news-section">
           <img src='<%= story.image_url%>'></img>
@@ -27,9 +35,14 @@
           </div>
         </section> 
       <% }) %>
+      </section>
+  </section>
+
+
       <div class="hidden-div"></div>
     <section class="footer">
       <%- include('../partials/footercontent', {uID}) %>
+      <%- include('../partials/footer') %>
     </section>
   </body>
 </html>
