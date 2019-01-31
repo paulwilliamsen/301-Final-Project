@@ -14,6 +14,10 @@ CREATE TABLE locations(
   latitude NUMERIC(8,6),
   longitude NUMERIC(9,6),
   search_query VARCHAR(40),
+  lat NUMERIC(8,6),
+  lng NUMERIC(9,6),
+  latSW NUMERIC(8,6),
+  lngSW NUMERIC(9,6),
   user_id INT,
   FOREIGN KEY (user_id) REFERENCES users (id)
 );

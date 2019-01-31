@@ -16,6 +16,14 @@
       <p><%= weather[0].time %></p>
       <p><%= weather[0].forecast %></p>
     </section>
+    <% traffic.forEach(incident =>{ %>
+      <section class="news-section">
+        <img src='<%= incident.iconURL%>'></img>
+        <div class="news-text">
+          <p><%= incident.fullDesc %></p>
+        </div>
+      </section> 
+    <% }) %>
       <% news.forEach(story =>{ %>
         <section class="news-section">
           <img src='<%= story.image_url%>'></img>
