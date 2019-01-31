@@ -48,7 +48,7 @@ let uID = 0;
 //error handler
 function errorHandler(err, response) {
   console.error(err);
-  if (response) response.status(500).send('Something Broke!!!')
+  if (response) response.status(500).send('Something Broke!!!');
 }
 
 
