@@ -255,12 +255,12 @@ function News(data){
   this.description = data.description;
   this.url = data.url;
   this.publishedAt = data.publishedAt;
+  this.image_url = data.urlToImage;
 }
 
 /*-----------Weather----------------*/
 function getWeather(request) {
 
-=======
   // console.log('getWeather request', request);
 
   const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
