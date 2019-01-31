@@ -26,7 +26,10 @@ h3 {
   
 } */
 
-
+.hidden-div{
+  display: hidden;
+  height: 8em;
+}
 button {
   width: 15em;
   padding: .6em;
@@ -45,12 +48,36 @@ button {
   width:100%;
   height: 8em;
   background: #333;
+  position: fixed;
+  bottom: 0;
 }
 
-.footer a {
+.footer form {
   color: white;
-  font-size: 2em;
-  padding: 1em;
   text-decoration: none;
   white-space: nowrap;
+  background-color: #333;
+  width: 25%;
+  height: 100%;
+}
+.footer button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: none;
+  color: white;
+  height: 100%;
+  border: none;
+  border-radius: 0%;
+}
+.footer button:hover{
+  background-color: #f2f2f2;
+  color: black;
+}
+
+.navParent{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;;
 }

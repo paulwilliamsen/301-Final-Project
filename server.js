@@ -30,7 +30,7 @@ app.use(
 );
 app.get('/', loadLogin);
 app.get('/about', (request, response) => {
-  response.render('pages/about')
+  response.render('pages/about', {uID})
 });
 app.post('/check-password', checkPassword);
 app.post('/create-login', addAccount);
