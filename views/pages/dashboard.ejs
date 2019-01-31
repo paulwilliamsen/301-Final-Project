@@ -5,14 +5,6 @@
   </head>
   <body id="dashboard-body">
     <%- include('../partials/header', uID) %>
-    <h1> DAILY PLAN-IT</h1>
-    <form action="/location" method="get">
-      <button type="submit">Dashboard</button>
-    </form>
-
-    <form action="/eventData" method="get">
-      <button type="submit">View Events</button>
-    </form>
     
     <h2 class="location-name"><%= location.formatted_query %></h2>
 
@@ -25,14 +17,15 @@
       <p><%= weather[0].forecast %></p>
     </section>
       <% news.forEach(story =>{ %>
-        <section class="news-section"></section>
-        <p><%= story.name %></p>
-        <p><%= story.author %></p>
-        <p><%= story.title %></p>
-        <img src='<%= story.image_url%>'></img>
-        <p><%= story.description %></p>
-        <p><%= story.url %></p>
-        <p><%= story.publishedAt %></p>
+        <section class="news-section">
+          <img src='<%= story.image_url%>'></img>
+          <div class="news-text">
+            <p><a href="<%= story.url %>"><%= story.title %></a></p>
+            <p><%= story.author %></p>
+            <p><%= story.description %></p>
+            <p><%= story.name %></p>
+            <p><%= story.publishedAt %></p>
+          </div>
         </section> 
       <% }) %>
     <section class="footer">
