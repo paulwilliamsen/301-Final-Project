@@ -1,0 +1,112 @@
+/* ------- Login ------------ */
+
+.login {
+  color: white;
+  font-size: 1.5em;
+}
+
+.original-form h2 {
+  margin-bottom: .3em;
+  font-size: 1.5em;
+  padding-bottom: 1em;
+}
+
+.visible-form h2 {
+  margin-bottom: .3em;
+  font-size: 1.5em;
+  padding-bottom: 1em;
+  color: green;
+}
+
+.login input{
+  margin: 1.5em;
+  padding: .6em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+p.error-message {
+  color: rgb(88, 18, 18);
+  font-size: 1em;
+  text-align: center;
+  padding: 1em;
+}
+
+.location-form input {
+  margin: 1.5em;
+  padding: 1em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+/* ------ Dashboard --------- */
+
+#dashboard-body h2 {
+  margin: 1em;
+}
+
+.location-name {
+  color:white;
+  font-size: 2em;
+}
+
+#dashboard-body input{
+  margin: 1.5em;
+  padding: .6em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+#weather-section {
+  background-color: whitesmoke;
+  color: black;
+  margin: 1.5em;
+}
+
+.news-section {
+  background-color: whitesmoke;
+  color: black;
+  margin: 1.5em;
+}
+
+#weather-section p {
+  font-size: 1.5em;
+  text-align: left;
+  padding: .2em;
+}
+
+.news-section p {
+  font-size: 1em;
+  text-align: left;
+  padding: .3em;
+}
+
+.news-section img {
+  max-width: 10em;
+  margin: 1em;
+  float: left;
+}
+
+/* ------- Events Page ------- */
+
+.event-section {
+  background-color: whitesmoke;
+  color: black;
+  margin: 1.5em;
+}
+
+#events-form input {
+  margin: .6em;
+  padding: .4em;
+  width: 50%;
+  font-size: .8em;
+}

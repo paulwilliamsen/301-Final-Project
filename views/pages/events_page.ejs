@@ -2,12 +2,11 @@
 <html>
   <head>
       <%- include('../partials/head') %>
-
   </head>
   <body id="events-body">
     <%- include('../partials/header', uID)%>
-
-    <form action="/events" method="post">
+    
+    <form id="events-form" action="/events" method="post">
       <input type="date" name="date" required/>
       <input type="time" name="start_time"/>
 
@@ -15,11 +14,12 @@
       <input type="text" name="description" placeholder="Description"/> 
       <button type="submit">Submit</button>
     </form>
+    <div id="events-display">
+      <% if(events.length) { %>
+      <%- include('../partials/events', {events}) %>
+      <% }; %>
+    </div>
 
-    <% if(events.length) { %>
-    <%- include('../partials/events', {events}) %>
-    <% }; %>
-    
     <section class="footer">
     <%- include('../partials/footercontent') %>
     </section>

@@ -1,6 +1,43 @@
-.hidden-form{
-  display: none;
+/* ------- Login ------------ */
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5em;
+  padding-top: 2em;
 }
-/* .visible-form{
-  display: block;
-} */
+
+.location-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 5em;
+  padding-top: 2em;
+}
+
+/* ------ Dashboard --------- */
+
+#dashboard-body form {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+
+/* ------- Events Page ------- */
+
+#events-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2em;
+}
+
+#events-display {
+  margin: 2em 0 4em;
+}
+
+#events-display p {
+  padding: .3em;
+}
