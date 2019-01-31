@@ -58,7 +58,7 @@ function getAllInfo(request, response, id) {
     .then(result => {
       getTraffic(request)
         .then(incident =>{
-          fetchNews(request)
+          fetchNews()
             .then(story => {
               response.render('pages/dashboard', { location: request,traffic: incident, weather: result, news: story, uID: id });
             })
@@ -330,7 +330,7 @@ function deleteEvent(request, response){
 
 /*----------Traffic---------------------*/
 function getTraffic(request){
-  const trafficData = `http://www.mapquestapi.com/traffic/v2/incidents?key=${process.env.TRAFFIC_API_KEY}&boundingBox=${request.latSW},${request.lngSW},${request.lat},${request.lng}&filters=incidents`;
+  const trafficData = `http://www.mapquestapi.com/traffic/v2/incidents?key=${process.env.TRAFFIC_API_KEY}&boundingBox=${request.lat},${request.lng},${request.latsw},${request.lngsw}&filters=incidents`;
 
   return superagent.get(trafficData)
     .then(results =>{
