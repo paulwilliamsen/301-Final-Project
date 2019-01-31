@@ -206,8 +206,8 @@ Location.prototype.save = function () {
       }
     })
     .then(() => {
-      let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id, lat, lng,latSW, lngSW) VALUES ($1, $2, $3, $4, $5,$6, $7, $8, $9);`;
-      let values = [this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id, this.lat, this.lng, this.latSW, this.lngSW];
+      let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id, lat, lng,latsw, lngsw) VALUES ($1, $2, $3, $4, $5,$6, $7, $8, $9);`;
+      let values = [this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id, this.lat, this.lng, this.latsw, this.lngsw];
       return client.query(SQL, values);
     })
 }
