@@ -41,26 +41,28 @@ app.get('/pages/:event_id', getOneEvent);
 app.put('/update/:id', updateEvent);
 app.get('/eventData', getEvents);
 app.delete('/delete/:event_id', deleteEvent);
-// app.get('/dashboard', getAllInfo);
 
 
 let uID = 0;
+
 //error handler
 function errorHandler(err, response) {
   console.error(err);
-  if (response) response.status(500).send('Something Broke!!!')
+  if (response) response.status(500).send('Something Broke!!!');
 }
 
 
 function getAllInfo(request, response, id) {
-  // console.log('line 49 getallinfo req', request);
 
   getWeather(request)
     .then(result => {
-      fetchNews(request)
-        .then(story => {
-          // console.log('line 56', story)
-          response.render('pages/dashboard', { location: request, weather: result, news: story, uID: id });
+      getTraffic(request)
+        .then(incident =>{
+          fetchNews()
+            .then(story => {
+              response.render('pages/dashboard', { location: request,traffic: incident, weather: result, news: story, uID: id });
+            })
+            .catch(error => errorHandler(error));
         })
         .catch(error => errorHandler(error));
     })
@@ -137,7 +139,6 @@ Location.lookupLocation = (id, response) => {
 };
 
 function requestLocation(request, response) {
-  console.log('\n\n*******************\nline 137 request.body\n******************\n\n', request.body);
   Location.fetchLocation(request.body.search)
     .then(data => {
       getAllInfo(data, response);
@@ -146,7 +147,6 @@ function requestLocation(request, response) {
     .catch(error => errorHandler(error));
 }
 function loadDashboard(request, response) {
-  console.log('line 146', request.body.userId);
   Location.lookupLocation(request.body.userId, response);
 }
 
@@ -187,6 +187,10 @@ function Location(query, response) {
   this.longitude = response.geometry.location.lng;
   this.search_query = query;
   this.user_id = uID;
+  this.lat = response.geometry.viewport.northeast.lat;
+  this.lng = response.geometry.viewport.northeast.lng;
+  this.latsw = response.geometry.viewport.southwest.lat;
+  this.lngsw = response.geometry.viewport.southwest.lng;
 }
 
 Location.prototype.save = function () {
@@ -202,8 +206,8 @@ Location.prototype.save = function () {
       }
     })
     .then(() => {
-      let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id) VALUES ($1, $2, $3, $4, $5);`;
-      let values = [this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id];
+      let SQL = `INSERT INTO locations (formatted_query, latitude, longitude, search_query, user_id, lat, lng,latSW, lngSW) VALUES ($1, $2, $3, $4, $5,$6, $7, $8, $9);`;
+      let values = [this.formatted_query, this.latitude, this.longitude, this.search_query, this.user_id, this.lat, this.lng, this.latSW, this.lngSW];
       return client.query(SQL, values);
     })
 }
@@ -221,7 +225,7 @@ function createEvent(request, response) {
 }
 
 function getEvents(request, response) {
-  let SQL = `SELECT * FROM events WHERE user_id=$1;`;
+  let SQL = `SELECT * FROM events WHERE user_id=$1 ORDER BY date ASC, start_time ASC;`;
   let values = [uID];
 
   return client.query(SQL, values)
@@ -236,8 +240,8 @@ function getEvents(request, response) {
 }
 
 /*-----------news-----------------*/
-function fetchNews(query) {
-  const allNewsData = `https://newsapi.org/v2/everything?q=${query.search_query}&sortBy=publishedAt&keyword=${query.search_query}&sortBy=popularity&apiKey=${process.env.NEWS_API_KEY}`;
+function fetchNews() {
+  const allNewsData = `https://newsapi.org/v2/everything?q=unitedstates&sortBy=publishedAt&keyword=national&sortBy=popularity&apiKey=${process.env.NEWS_API_KEY}`;
 
   return superagent.get(allNewsData)
     .then(results => {
@@ -263,8 +267,6 @@ function News(data) {
 /*-----------Weather----------------*/
 function getWeather(request) {
 
-  // console.log('getWeather request', request);
-
   const weatherData = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${request.latitude},${request.longitude}`;
 
   return superagent.get(weatherData)
@@ -279,6 +281,9 @@ function getWeather(request) {
 function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
+  this.high = day.temperatureHigh;
+  this.low = day.temperatureLow;
+  
   let iconList = {
     'clear-day': './icons/sunny.png',
     'clear-night':'./icons/clearnight.png',
@@ -291,18 +296,18 @@ function Weather(day) {
     'partly-cloudy-day':'./icons/partlycloudyday.png',
     'partly-cloudy-night':'./icons/partlycloudyday.png'
   }
+  console.log('temp', this.temp);
+
   this.icon = iconList[day.icon];
 }
 
 function getOneEvent(request, response) {
   let SQL = 'SELECT * FROM events WHERE id=$1;';
-  console.log('ln 283', request.params);
   let values = [request.params.event_id];
 
   return client
     .query(SQL, values)
     .then(result => {
-      console.log('ln 288', result.rows);
       return response.render('pages/singleEvent', { info: result.rows[0], uID });
     })
     .catch(err => errorHandler(err, response));
@@ -326,4 +331,24 @@ function deleteEvent(request, response){
   client.query(SQL, values)
     .then(response.redirect('/eventData'))
     .catch(err => errorHandler(err, response));
+}
+
+/*----------Traffic---------------------*/
+function getTraffic(request){
+  const trafficData = `http://www.mapquestapi.com/traffic/v2/incidents?key=${process.env.TRAFFIC_API_KEY}&boundingBox=${request.lat},${request.lng},${request.latsw},${request.lngsw}&filters=incidents`;
+
+  return superagent.get(trafficData)
+    .then(results =>{
+      let trafficArray=[];
+      for(let i = 0; i<results.body.incidents.length; i++){
+        let trafficData = new Traffic(results.body.incidents[i]);
+        trafficArray.push(trafficData);
+      }
+      return trafficArray;
+    })
+}
+
+function Traffic(incident){
+  this.fullDesc = incident.fullDesc;
+  this.iconURL = incident.iconURL;
 }

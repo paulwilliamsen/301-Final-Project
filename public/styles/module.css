@@ -15,7 +15,6 @@
   margin-bottom: .3em;
   font-size: 1.5em;
   padding-bottom: 1em;
-  color: green;
 }
 
 .name, .password {
@@ -34,14 +33,16 @@
 }
 
 p.error-message {
-  color: rgb(88, 18, 18);
+  color: whitesmoke;
   font-size: 1em;
+  font-family: 'Baloo', cursive;
+  text-decoration: underline overline;
   text-align: center;
   padding: 1em;
 }
 
 .location-form input {
-  margin: 1.5em;
+  /* margin: 1.5em; */
   padding: 1em;
   width: 15em;
   font-size: 1em;
@@ -53,7 +54,7 @@ p.error-message {
 /* ------ Dashboard --------- */
 
 #dashboard-body h2 {
-  margin: 1em;
+  margin-top: .5em;
 }
 
 #dashboard-body input{
@@ -68,7 +69,6 @@ p.error-message {
 
 #weather-section {
   color: white;
-  font-family: 'Baloo', cursive;
   margin: 0 auto;
   width: 80%;
 }
@@ -88,6 +88,7 @@ p.error-message {
 }
 #weather-section p {
   font-size: 1.5em;
+  font-family: 'Baloo', cursive;
   text-align: center;
   padding: .2em;
 }
@@ -107,9 +108,12 @@ p.error-message {
 /* ------- Events Page ------- */
 
 .event-section {
-  background-color: whitesmoke;
+  background-color: rgba(255, 255, 255, 0.89);
   color: black;
   margin: 1.5em;
+  padding: 3vw;
+  box-shadow: 5px 10px black;
+  border-radius: 5px;
 }
 
 #events-form input {
@@ -118,6 +122,7 @@ p.error-message {
   width: 50%;
   font-size: .8em;
 }
+
 
 #expand-one-btn{
   width: 90%;
@@ -141,3 +146,12 @@ p.error-message {
   width: 20%;
   font-size: 2em;
 }
+
+.event-section a {
+  color: rgb(78, 78, 180);
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  border: 1px solid black;
+  padding: .2em;
+}
+

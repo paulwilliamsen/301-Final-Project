@@ -15,7 +15,11 @@
       <img src="<%= weather[0].icon %>"> </img>
       <p><%= weather[0].time %></p>
       <p><%= weather[0].forecast %></p>
+      <p>High: <%= weather[0].high %></p>
+      <p>Low: <%= weather[0].low %></p>
+
     </section>
+
 
 
     <section class="expand-one">
@@ -24,7 +28,7 @@
         <section class="expand-btn-plus">-</section>
       </button>
       <section class="content-one">
-      <% news.forEach(story =>{ %>
+        <% news.forEach(story =>{ %>
         <section class="news-section">
           <img src='<%= story.image_url%>'></img>
           <div class="news-text">
@@ -37,6 +41,15 @@
       <% }) %>
       </section>
   </section>
+  
+   <% traffic.forEach(incident =>{ %>
+      <section class="news-section">
+        <img src='<%= incident.iconURL%>'></img>
+        <div class="news-text">
+          <p><%= incident.fullDesc %></p>
+        </div>
+      </section> 
+    <% }) %>
 
 
       <div class="hidden-div"></div>
