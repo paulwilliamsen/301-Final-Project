@@ -37,8 +37,8 @@ app.post('/create-login', addAccount);
 app.post('/location', requestLocation);
 app.post('/dashboard', loadDashboard);
 app.post('/events', createEvent);
-
-
+app.get('/pages/:event_id', getOneEvent);
+app.put('/update/:id', updateEvent);
 app.get('/eventData', getEvents);
 // app.get('/dashboard', getAllInfo);
 
@@ -278,3 +278,28 @@ function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0,15);
 }
+
+function getOneEvent(request, response){
+  let SQL = 'SELECT * FROM events WHERE id=$1;';
+  console.log('ln 283', request.params);
+  let values = [request.params.event_id ];
+
+  return client
+  .query(SQL, values)
+  .then(result => {
+    console.log('ln 288', result.rows);
+    return response.render('pages/singleEvent', {info: result.rows[0], uID});
+  })
+  .catch(err => handleError(err, response));
+}
+
+function updateEvent(request, response){
+  let {date, start_time, title, description} = request.body;
+  let SQL = `UPDATE events SET date=$1, start_time=$2, title=$3, description=$4 WHERE id=$5;`;
+  let values = [date, start_time, title, description, request.params.id];
+
+  client
+    .query(SQL, values)
+    .then(response.redirect('/eventData'))
+    .catch(err=> handleError(err, response));
+  }
