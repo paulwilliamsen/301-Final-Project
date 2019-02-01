@@ -113,7 +113,7 @@ function addAccount(request, response) {
         let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
         let values = [username, password];
         return client.query(SQL, values)
-          .then(response.redirect('/'))
+          .then(response.render('./index', {message: 'User Account created succesfully. Please log in now!'}))
       }
     })
 }
