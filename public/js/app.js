@@ -12,7 +12,14 @@ $('.change-back').on('click', function() {
 
 $('.expand-one').click(function(){
   $('.content-one').slideToggle('slow');
-  let text = $('.expand-btn-plus').text();
-  $('.expand-btn-plus').text(
+  let text = $('.expand-btn-plus-2').text();
+  $('.expand-btn-plus-2').text(
+    text ==='+' ? '-' : '+');
+});
+
+$('.expand-two').click(function(){
+  $('.content-two').slideToggle('slow');
+  let text = $('.expand-btn-plus-1').text();
+  $('.expand-btn-plus-1').text(
     text ==='+' ? '-' : '+');
 });
