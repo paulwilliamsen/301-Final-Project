@@ -185,15 +185,26 @@ p.error-message {
   font-size: 2em;
 }
 
+.event-section p {
+  margin: .5em;
+}
 .event-section a {
-  color: rgb(78, 78, 180);
+  color: rgb(255, 255, 255);
   font-family: Arial, Helvetica, sans-serif;
   text-decoration: none;
-  border: 1px solid black;
-  padding: .2em;
+  border-radius: 6px;
+  background-color: rgb(153, 153, 153);
+  margin: 1em;
+  padding: .4em 1.5em .4em 1.5em;
+  box-shadow: 4px 4px 4px black;
+
 }
 .content-one, .content-two, .content-weather, .content-event {
   display: none;
+}
+
+.event-section a:hover{
+  background-color: rgb(66, 66, 66);
 }
 
 #about-body h6 {
