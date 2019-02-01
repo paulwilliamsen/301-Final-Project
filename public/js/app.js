@@ -23,3 +23,10 @@ $('.expand-two').click(function(){
   $('.expand-btn-plus-1').text(
     text ==='+' ? '-' : '+');
 });
+
+$('.expand-weather').click(function(){
+  $('.content-weather').slideToggle('slow');
+  let text = $('.expand-btn-plus-weather').text();
+  $('.expand-btn-plus-weather').text(
+    text ==='+' ? '-' : '+');
+});

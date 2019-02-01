@@ -18,12 +18,12 @@
       <p>High: <%= weather[0].high %></p>
       <p>Low: <%= weather[0].low %></p>
       
-      <section class="expand-one">
-        <button id="expand-one-btn">
+      <section class="expand-weather">
+        <button id="expand-weather-btn">
           <section class="expand-btn-text">Forecast for the Week Ahead</section>
-          <section class="expand-btn-plus">-</section>
+          <section class="expand-btn-plus-weather">+</section>
         </button>
-        <section class="content-one">
+        <section class="content-weather">
           <%- include('../partials/weather') %>
         </section>
     </section>
@@ -31,11 +31,11 @@
     <section class="expand-two">
         <button id="expand-two-btn">
           <section class="expand-btn-text">Today's Traffic Updates</section>
-          <section class="expand-btn-plus-1">-</section>
+          <section class="expand-btn-plus-1">+</section>
         </button>
         <section class="content-two">
      <% traffic.forEach(incident =>{ %>
-        <section class="news-section">
+        <section class="traffic-section">
           <img src='<%= incident.iconURL%>'></img>
           <div class="news-text">
             <p><%= incident.fullDesc %></p>
@@ -48,7 +48,7 @@
     <section class="expand-one">
       <button id="expand-one-btn">
         <section class="expand-btn-text">Today's Top Stories</section>
-        <section class="expand-btn-plus-2">-</section>
+        <section class="expand-btn-plus-2">+</section>
       </button>
       <section class="content-one">
         <% news.forEach(story =>{ %>
