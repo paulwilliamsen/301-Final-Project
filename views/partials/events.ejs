@@ -5,6 +5,9 @@
   <p><%= item.start_time %></p>
   <p><%= item.title %></p>
   <p><%= item.description %></p>
-  <a href="/pages/<%= item.id %>">Edit</a>
+  <form action="/pages/<%= item.id %>" method="get">
+    <input type="hidden" name="uID" value="<%- uID %>">
+    <button type="submit">Edit</button>
+  </form>
 </section>
 <% }) %>
