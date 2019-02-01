@@ -45,10 +45,10 @@ app.delete('/delete/:event_id', deleteEvent);
 app.get('*', errorHandler);
 
 
-let uID = 0;
+//let uID = 0;
 
 //error handler
-function errorHandler(err, response) {
+function errorHandler(response) {
   response.render('pages/error');
 }
 
@@ -87,7 +87,6 @@ function checkPassword(request, response) {
     .then(result => {
       //check the database for the username password combo.
       if (result.rows.length > 0) {
-        uID = result.rows[0].id;
         //If the user exists, go to lookupLocation then check for a location in the database
         Location.lookupLocation(result.rows[0].id, response);
       }
@@ -129,20 +128,20 @@ Location.lookupLocation = (id, response) => {
       //check the database for any data for that specific user.
       if (results.rows.length > 0) {
         //if there is a value in the database at that user_id, get the location.
-        getLocation(results.rows[0].user_id, response);
+        getLocation(results.rows[0].user_id, response, id);
       }
       else {
         //if there is no location data, then render the page for the user to enter a location.
-        response.render('pages/location_page');
+        response.render('pages/location_page', {uID: id});
       }
     })
-    .catch(error => errorHandler(error));
+    //.catch(err => errorHandler(err));
 };
 
 function requestLocation(request, response) {
-  Location.fetchLocation(request.body.search)
+  Location.fetchLocation(request.body.search, request.body.uID)
     .then(data => {
-      getAllInfo(data, response);
+      getAllInfo(data, response, request.body.uID);
       //response.render('pages/dashboard', {location: data});
     })
     .catch(error => errorHandler(error));
@@ -163,7 +162,7 @@ function getLocation(id, response) {
 }
 
 //When the button on the location page is submitted, go here. Ping the api.
-Location.fetchLocation = (query) => {
+Location.fetchLocation = (query, uID) => {
   const geoData = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${process.env.GEOCODE_API_KEY}`;
   return superagent.get(geoData)
     .then(response => {
@@ -171,9 +170,9 @@ Location.fetchLocation = (query) => {
         throw 'no data';
       }
       else {
-        let location = new Location(query, response.body.results[0])
+        let location = new Location(query, response.body.results[0], uID)
         //once it get the data from the api, go to the save function. That is where it checks for existing data, then replaces it if need be.
-        return location.save()
+        return location.save(uID)
           .then(() => {
             return location;
           })
@@ -182,7 +181,7 @@ Location.fetchLocation = (query) => {
     .catch(error => errorHandler(error));
 }
 
-function Location(query, response) {
+function Location(query, response, uID) {
   this.formatted_query = response.formatted_address;
   this.latitude = response.geometry.location.lat;
   this.longitude = response.geometry.location.lng;
@@ -194,7 +193,7 @@ function Location(query, response) {
   this.lngsw = response.geometry.viewport.southwest.lng;
 }
 
-Location.prototype.save = function () {
+Location.prototype.save = function (uID) {
 
   let SQL = `SELECT * FROM locations WHERE user_id=$1;`;
   let values = [uID];
@@ -214,27 +213,48 @@ Location.prototype.save = function () {
 }
 
 function createEvent(request, response) {
-  let { date, start_time, title, description } = request.body;
-  let SQL = `INSERT INTO events (date, start_time, title, description, user_id) VALUES ($1, $2, $3, $4, $5);`;
+  console.log('line 216', request.body);
+  let { date, start_time, title, description, uID } = request.body;
+  let SQL = `INSERT INTO events (date, start_time, title, description, uID) VALUES ($1, $2, $3, $4, $5) RETURNING uID;`;
   let values = [date, start_time, title, description, uID];
 
   return client.query(SQL, values)
     .then(data => {
-      getEvents(data, response);
+      console.log('data line 223', data);
+      getEventsBody(request, response);
     })
-    .catch(error => errorHandler(error));
+    .catch(err => errorHandler(err));
 }
 
-function getEvents(request, response) {
-  let SQL = `SELECT * FROM events WHERE user_id=$1 ORDER BY date ASC, start_time ASC;`;
-  let values = [uID];
+//Need to be a body
+function getEventsBody(request, response) {
+  let SQL = `SELECT * FROM events WHERE uID=$1 ORDER BY date ASC, start_time ASC;`;
+  console.log('req.body at 232', request.body);
+  let values = [request.body.uID];
 
   return client.query(SQL, values)
     .then(result => {
       if (result.rows.length > 0) {
-        response.render('pages/events_page', { events: result.rows, uID });
+        response.render('pages/events_page', { events: result.rows, uID: request.body.uID });
       } else {
-        response.render('pages/events_page', { events: '', uID });
+        response.render('pages/events_page', { events: '', uID: request.body.uID });
+      }
+    })
+    .catch(error => errorHandler(error));
+}
+
+//needs to be a query
+function getEvents(request, response) {
+  let SQL = `SELECT * FROM events WHERE uID=$1 ORDER BY date ASC, start_time ASC;`;
+  console.log('req.body at 249', request.query);
+  let values = [request.query.uID];
+
+  return client.query(SQL, values)
+    .then(result => {
+      if (result.rows.length > 0) {
+        response.render('pages/events_page', { events: result.rows, uID: request.query.uID });
+      } else {
+        response.render('pages/events_page', { events: '', uID: request.query.uID });
       }
     })
     .catch(error => errorHandler(error));
@@ -301,25 +321,27 @@ function Weather(day) {
 }
 /*--------------------------Events----------------------------*/
 function getOneEvent(request, response) {
+  console.log('LN 326');
   let SQL = 'SELECT * FROM events WHERE id=$1;';
   let values = [request.params.event_id];
 
-  return client
+  client
     .query(SQL, values)
     .then(result => {
-      return response.render('pages/singleEvent', { info: result.rows[0], uID });
+      return response.render('pages/singleEvent', { info: result.rows[0], uID: request.query.uID });
     })
     .catch(err => errorHandler(err, response));
 }
 
 function updateEvent(request, response) {
+  console.log('line 337', request.body)
   let { date, start_time, title, description } = request.body;
   let SQL = `UPDATE events SET date=$1, start_time=$2, title=$3, description=$4 WHERE id=$5;`;
   let values = [date, start_time, title, description, request.params.id];
 
   client
     .query(SQL, values)
-    .then(response.redirect('/eventData'))
+    .then(response.redirect('/eventData', {uID: request.body.uID}))
     .catch(err => errorHandler(err, response));
 }
 

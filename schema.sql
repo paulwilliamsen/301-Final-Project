@@ -28,6 +28,6 @@ CREATE TABLE events(
   start_time TIME,
   title VARCHAR(255),
   description VARCHAR(255),
-  user_id INT,
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  uID INT,
+  FOREIGN KEY (uID) REFERENCES users (id)
 );

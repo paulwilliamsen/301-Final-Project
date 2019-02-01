@@ -8,6 +8,7 @@
     <section>
     <form class="location-form" action="/location" method="post">
       <input type="text" name="search" placeholder="Enter your location" required/>
+      <input type="hidden" name="uID" value='<%- uID %>'>
       <button class="location-button" type="submit"> Search</button>
     </section>
     </form>
