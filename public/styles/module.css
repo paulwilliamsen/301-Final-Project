@@ -153,7 +153,7 @@ p.error-message {
   border: none;
 }
 
-#expand-two-weather:hover{
+#expand-weather-btn:hover{
   background-color:  rgb(48, 42, 83);
   color: white;
 }
