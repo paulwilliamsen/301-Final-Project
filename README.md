@@ -57,7 +57,7 @@ As a developer, I want my application to retrieve event/task data from the datab
 
 <br>
 
-###APIs Used
+### APIs Used
 
 News API
 
@@ -241,7 +241,7 @@ https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Park
    "status" : "OK"
 }
 
-###Schema 
+### Schema 
 
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
