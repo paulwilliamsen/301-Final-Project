@@ -6,6 +6,12 @@
   <body id="events-body">
     <%- include('../partials/header', uID)%>
     
+    <section class="expand-events">
+        <button id="expand-event-btn">
+          <section class="expand-btn-text">Add New Event</section>
+          <section class="expand-btn-plus-event">+</section>
+        </button>
+        <section class="content-event">
     <form id="events-form" action="/events" method="post">
       <input type="date" name="date" required/>
       <input type="time" name="start_time"/>
@@ -14,6 +20,9 @@
       <input type="text" name="description" placeholder="Description"/> 
       <button type="submit">Submit</button>
     </form>
+  </section>
+  </section>
+
     <div id="events-display">
       <% if(events.length) { %>
       <%- include('../partials/events', {events}) %>
@@ -23,6 +32,7 @@
     <div class="hidden-div"></div>
     <section class="footer">
     <%- include('../partials/footercontent', {uID}) %>
+    <%- include('../partials/footer') %>
     </section>
   </body>
 
