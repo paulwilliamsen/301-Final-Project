@@ -51,7 +51,7 @@ function errorHandler(err, response) {
   if (response) response.status(500).send('Something Broke!!!');
 }
 
-
+//get all info for dashboard
 function getAllInfo(request, response, id) {
 
   getWeather(request)
@@ -278,12 +278,12 @@ function getWeather(request) {
     })
     .catch(error => errorHandler(error));
 }
+
 function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
   this.high = day.temperatureHigh;
   this.low = day.temperatureLow;
-  
   let iconList = {
     'clear-day': './icons/sunny.png',
     'clear-night':'./icons/clearnight.png',
@@ -296,11 +296,9 @@ function Weather(day) {
     'partly-cloudy-day':'./icons/partlycloudyday.png',
     'partly-cloudy-night':'./icons/partlycloudyday.png'
   }
-  console.log('temp', this.temp);
-
   this.icon = iconList[day.icon];
 }
-
+/*--------------------------Events----------------------------*/
 function getOneEvent(request, response) {
   let SQL = 'SELECT * FROM events WHERE id=$1;';
   let values = [request.params.event_id];
