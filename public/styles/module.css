@@ -67,13 +67,13 @@ p.error-message {
   box-shadow: 4px 4px 4px black;
 }
 
-#weather-section {
+.weather-section {
   color: white;
   margin: 0 auto;
   width: 80%;
 }
 
-#weather-section h2{
+.weather-section h2{
   font-size: 4em;
 }
 
@@ -86,7 +86,7 @@ p.error-message {
   border-radius: 5px;
 
 }
-#weather-section p {
+.weather-section p {
   font-size: 1.5em;
   font-family: 'Baloo', cursive;
   text-align: center;
@@ -154,4 +154,3 @@ p.error-message {
   border: 1px solid black;
   padding: .2em;
 }
-

@@ -10,17 +10,25 @@
       <input type="text" name="search" placeholder="Enter a new location" required/>
       <button type="submit">New Search</button>
     </form>
-    <section id="weather-section">
+    <section class="weather-section">
       <h2 class="location-name"><%= location.formatted_query %></h2>
       <img src="<%= weather[0].icon %>"> </img>
       <p><%= weather[0].time %></p>
       <p><%= weather[0].forecast %></p>
       <p>High: <%= weather[0].high %></p>
       <p>Low: <%= weather[0].low %></p>
-
+      
+      <section class="expand-one">
+        <button id="expand-one-btn">
+          <section class="expand-btn-text">Forecast for the Week Ahead</section>
+          <section class="expand-btn-plus">-</section>
+        </button>
+        <section class="content-one">
+          <%- include('../partials/weather') %>
+        </section>
     </section>
-
-
+    </section>
+    
 
     <section class="expand-one">
       <button id="expand-one-btn">
