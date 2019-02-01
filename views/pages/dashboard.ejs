@@ -4,7 +4,7 @@
     <%- include('../partials/head') %>
   </head>
   <body id="dashboard-body">
-    <%- include('../partials/header', uID) %>
+    <%- include('../partials/header', user_id) %>
 
     <form action="/location" method="post">
       <input type="text" name="search" placeholder="Enter a new location" required/>
@@ -69,7 +69,7 @@
 
       <div class="hidden-div"></div>
     <section class="footer">
-      <%- include('../partials/footercontent', {uID}) %>
+      <%- include('../partials/footercontent', {user_id}) %>
       <%- include('../partials/footer') %>
     </section>
   </body>
