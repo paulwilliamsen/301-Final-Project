@@ -163,6 +163,7 @@ p.error-message {
   width: 80%;
   float: left;
   font-size: 2em;
+  font-family: 'Baloo', cursive;
 }
 .expand-btn-plus-1, .expand-btn-plus-event{
   text-align: right;
@@ -201,6 +202,11 @@ p.error-message {
 .content-one, .content-two, .content-weather, .content-event {
   display: none;
 }
+
 .event-section a:hover{
   background-color: rgb(66, 66, 66);
+}
+
+#about-body h6 {
+  font-family: 'Baloo', cursive
 }
