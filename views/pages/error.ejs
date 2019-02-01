@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <%- include('../partials/header') %>
+    <h1>An error occured. Please try again.</h1>
+
+    <form action="/" method="get">
+        <button type="submit">Return to login</button>
+        <input type="hidden" name="userId" value="<%- uID=0  %>">
+      </form>
+</body>
+</html>

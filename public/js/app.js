@@ -30,9 +30,16 @@ $('.expand-one').click(function(){
     text ==='+' ? '-' : '+');
 });
 
-$('.expand-weather').click(function(){
+$('#expand-weather-btn').click(function(){
   $('.content-weather').slideToggle('slow');
   let text = $('.expand-btn-plus-weather').text();
   $('.expand-btn-plus-weather').text(
+    text ==='+' ? '-' : '+');
+});
+
+$('#expand-event-btn').click(function(){
+  $('.content-event').slideToggle('slow');
+  let text = $('.expand-btn-plus-event').text();
+  $('.expand-btn-plus-event').text(
     text ==='+' ? '-' : '+');
 });

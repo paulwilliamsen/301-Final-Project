@@ -42,16 +42,17 @@ app.put('/update/:id', updateEvent);
 app.get('/eventData', getEvents);
 app.delete('/delete/:event_id', deleteEvent);
 
+app.get('*', errorHandler);
+
 
 let uID = 0;
 
 //error handler
 function errorHandler(err, response) {
-  console.error(err);
-  if (response) response.status(500).send('Something Broke!!!');
+  response.render('pages/error');
 }
 
-
+//get all info for dashboard
 function getAllInfo(request, response, id) {
 
   getWeather(request)
@@ -113,7 +114,7 @@ function addAccount(request, response) {
         let SQL = `INSERT INTO users(username, password) VALUES ($1, $2);`;
         let values = [username, password];
         return client.query(SQL, values)
-          .then(response.redirect('/'))
+          .then(response.render('./index', {message: 'User Account created succesfully. Please log in now!'}))
       }
     })
 }
@@ -278,12 +279,12 @@ function getWeather(request) {
     })
     .catch(error => errorHandler(error));
 }
+
 function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
   this.high = day.temperatureHigh;
   this.low = day.temperatureLow;
-  
   let iconList = {
     'clear-day': './icons/sunny.png',
     'clear-night':'./icons/clearnight.png',
@@ -296,11 +297,9 @@ function Weather(day) {
     'partly-cloudy-day':'./icons/partlycloudyday.png',
     'partly-cloudy-night':'./icons/partlycloudyday.png'
   }
-  console.log('temp', this.temp);
-
   this.icon = iconList[day.icon];
 }
-
+/*--------------------------Events----------------------------*/
 function getOneEvent(request, response) {
   let SQL = 'SELECT * FROM events WHERE id=$1;';
   let values = [request.params.event_id];

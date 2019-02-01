@@ -36,9 +36,10 @@ p.error-message {
   color: whitesmoke;
   font-size: 1em;
   font-family: 'Baloo', cursive;
-  text-decoration: underline overline;
+  text-decoration: overline;
   text-align: center;
   padding: 1em;
+  margin-bottom: 10px;
 }
 
 .location-form input {
@@ -125,13 +126,13 @@ p.error-message {
   font-size: .8em;
 }
 
-#expand-one-btn{
+#expand-one-btn, #expand-event-btn{
   width: 90%;
   text-align: left;
   margin: 10px;
   border: none;
 }
-#expand-one-btn:hover{
+#expand-one-btn:hover, #expand-event-btn:hover{
   background-color: rgb(48, 42, 83);
   color: white;
 }
@@ -164,7 +165,7 @@ p.error-message {
   font-size: 2em;
   font-family: 'Baloo', cursive;
 }
-.expand-btn-plus-1{
+.expand-btn-plus-1, .expand-btn-plus-event{
   text-align: right;
   float: right;
   width: 20%;
@@ -191,7 +192,7 @@ p.error-message {
   border: 1px solid black;
   padding: .2em;
 }
-.content-one, .content-two, .content-weather {
+.content-one, .content-two, .content-weather, .content-event {
   display: none;
 }
 
