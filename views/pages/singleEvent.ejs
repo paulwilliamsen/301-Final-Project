@@ -13,10 +13,12 @@
 
       <input type="text" name="title" placeholder="Title" value="<%- info.title  %>" required/> 
       <input type="text" name="description" placeholder="Description" value="<%- info.description  %>"/> 
+      <input type=hidden name="uID" value="<%- uID %>">
       <button type="submit">Update</button>
     </form>
     <form action="/delete/<%= info.id %>" method='post'>
       <input type="hidden" name="_method" value='delete'/>
+      <input type=hidden value="<%- uID %>">
       <button type="submit">Delete</button>
     </form>
 
