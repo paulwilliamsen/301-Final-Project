@@ -42,13 +42,14 @@ app.put('/update/:id', updateEvent);
 app.get('/eventData', getEvents);
 app.delete('/delete/:event_id', deleteEvent);
 
+app.get('*', errorHandler);
+
 
 let uID = 0;
 
 //error handler
 function errorHandler(err, response) {
-  console.error(err);
-  if (response) response.status(500).send('Something Broke!!!');
+  response.render('pages/error');
 }
 
 //get all info for dashboard
