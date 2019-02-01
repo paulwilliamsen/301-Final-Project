@@ -27,13 +27,28 @@
           <%- include('../partials/weather') %>
         </section>
     </section>
+
+    <section class="expand-two">
+        <button id="expand-two-btn">
+          <section class="expand-btn-text">Today's Traffic Updates</section>
+          <section class="expand-btn-plus-1">-</section>
+        </button>
+        <section class="content-two">
+     <% traffic.forEach(incident =>{ %>
+        <section class="news-section">
+          <img src='<%= incident.iconURL%>'></img>
+          <div class="news-text">
+            <p><%= incident.fullDesc %></p>
+          </div>
+        </section> 
+      <% }) %>
     </section>
-    
+  </section>
 
     <section class="expand-one">
       <button id="expand-one-btn">
         <section class="expand-btn-text">Today's Top Stories</section>
-        <section class="expand-btn-plus">-</section>
+        <section class="expand-btn-plus-2">-</section>
       </button>
       <section class="content-one">
         <% news.forEach(story =>{ %>
@@ -50,15 +65,6 @@
       </section>
   </section>
   
-   <% traffic.forEach(incident =>{ %>
-      <section class="news-section">
-        <img src='<%= incident.iconURL%>'></img>
-        <div class="news-text">
-          <p><%= incident.fullDesc %></p>
-        </div>
-      </section> 
-    <% }) %>
-
 
       <div class="hidden-div"></div>
     <section class="footer">

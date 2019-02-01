@@ -80,11 +80,13 @@ p.error-message {
 .news-section {
   background-color: rgba(255, 255, 255, 0.89);
   color: black;
-  margin: 1.5em;
+  margin: 0 auto;
+  margin-top: 1em;
   padding: 3vw;
   box-shadow: 5px 10px black;
   border-radius: 5px;
-
+  width: 80%;
+  align-content: center;
 }
 .weather-section p {
   font-size: 1.5em;
@@ -123,7 +125,6 @@ p.error-message {
   font-size: .8em;
 }
 
-
 #expand-one-btn{
   width: 90%;
   text-align: left;
@@ -131,7 +132,17 @@ p.error-message {
   border: none;
 }
 #expand-one-btn:hover{
-  background-color: black;
+  background-color: rgb(48, 42, 83);
+  color: white;
+}
+#expand-two-btn{
+  width: 90%;
+  text-align: left;
+  margin: 10px;
+  border: none;
+}
+#expand-two-btn:hover{
+  background-color:  rgb(48, 42, 83);
   color: white;
 }
 .expand-btn-text{
@@ -139,14 +150,18 @@ p.error-message {
   float: left;
   font-size: 2em;
 }
-.expand-btn-plus{
+.expand-btn-plus-1{
   text-align: right;
   float: right;
-  color: #f2f2f2;
   width: 20%;
   font-size: 2em;
 }
-
+.expand-btn-plus-2{
+  text-align: right;
+  float: right;
+  width: 20%;
+  font-size: 2em;
+}
 .event-section a {
   color: rgb(78, 78, 180);
   font-family: Arial, Helvetica, sans-serif;
