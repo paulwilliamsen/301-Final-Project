@@ -1,0 +1,9 @@
+<% for(let i=1; i<weather.length; i++) { %>
+  <section class="weather-section">
+    <img src="<%= weather[i].icon %>"> </img>
+    <p><%= weather[i].time %></p>
+    <p><%= weather[i].forecast %></p>
+    <p>High: <%= weather[i].high %></p>
+    <p>Low: <%= weather[i].low %></p>
+  </section>
+<% } %>
