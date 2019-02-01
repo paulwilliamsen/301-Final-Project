@@ -341,7 +341,7 @@ function updateEvent(request, response) {
 
   client
     .query(SQL, values)
-    .then(response.redirect('/eventData', {uID: request.body.uID}))
+    .then(getEventsBody(request, response))
     .catch(err => errorHandler(err, response));
 }
 
