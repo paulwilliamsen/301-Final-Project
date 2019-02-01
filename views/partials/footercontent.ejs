@@ -1,0 +1,21 @@
+<nav class="navParent">
+        <form action="/dashboard" method="post">
+            <input type="hidden" name="userId" value="<%- uID  %>">
+            <button type="submit">Dashboard</button>
+          </form>
+          
+          <form action="/eventData" method="get">
+            <button type="submit">View Events</button>
+            <input type="hidden" name="userId" value="<%- uID  %>">
+          </form>
+
+          <form action="/about" method="get">
+            <button type="submit">About</button>
+            <input type="hidden" name="userId" value="<%- uID  %>">
+          </form>
+
+          <form action="/" method="get">
+            <button type="submit">Log Out</button>
+            <input type="hidden" name="userId" value="<%- uID=0  %>">
+          </form>
+</nav>

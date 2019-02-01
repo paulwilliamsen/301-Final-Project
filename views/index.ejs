@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('./partials/head') %>
+  </head>
+  <body id="index-body">
+    <h1>WELCOME TO THE DAILY PLAN-IT</h1>
+    <section class="login">
+      <p class="error-message"><%= message %></p>
+      <%- include('./pages/loginform') %>
+    </section>
+    <%- include('./partials/footer') %>
+  </body>
+</html>

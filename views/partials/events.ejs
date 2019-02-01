@@ -1,0 +1,10 @@
+<% events.forEach(item => { %>
+<section class="event-section">
+  <% let date = new Date(item.date).toISOString().substring(0, 10); %>
+  <p><%= date %></p>
+  <p><%= item.start_time %></p>
+  <p><%= item.title %></p>
+  <p><%= item.description %></p>
+  <a href="/pages/<%= item.id %>">Edit</a>
+</section>
+<% }) %>

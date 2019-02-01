@@ -1,0 +1,212 @@
+/* ------- Login ------------ */
+
+.login {
+  color: white;
+  font-size: 1.5em;
+}
+
+.original-form h2 {
+  margin-bottom: .3em;
+  font-size: 1.5em;
+  padding-bottom: 1em;
+}
+
+.visible-form h2 {
+  margin-bottom: .3em;
+  font-size: 1.5em;
+  padding-bottom: 1em;
+}
+
+.name, .password {
+  font-family: 'Baloo', cursive;
+
+}
+
+.login input{
+  margin: 1.5em;
+  padding: .6em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+p.error-message {
+  color: whitesmoke;
+  font-size: 1em;
+  font-family: 'Baloo', cursive;
+  text-decoration: overline;
+  text-align: center;
+  padding: 1em;
+  margin-bottom: 10px;
+}
+
+.location-form input {
+  /* margin: 1.5em; */
+  padding: 1em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+/* ------ Dashboard --------- */
+
+#dashboard-body h2 {
+  margin-top: .5em;
+}
+
+#dashboard-body input{
+  margin: 1.5em;
+  padding: .6em;
+  width: 15em;
+  font-size: 1em;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+
+.weather-section {
+  color: white;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.weather-section h2{
+  font-size: 4em;
+}
+
+.news-section {
+  background-color: rgba(255, 255, 255, 0.89);
+  color: black;
+  margin: 0 auto;
+  margin-top: 1em;
+  padding: 3vw;
+  box-shadow: 5px 10px black;
+  border-radius: 5px;
+  width: 80%;
+  align-content: center;
+}
+.weather-section p {
+  font-size: 1.5em;
+  font-family: 'Baloo', cursive;
+  text-align: center;
+  padding: .2em;
+}
+
+.news-section p {
+  font-size: 1em;
+  text-align: left;
+  padding: .3em;
+}
+
+.news-section img {
+  max-width: 10em;
+  margin: 1em;
+  float: left;
+}
+
+/* ------- Events Page ------- */
+
+.event-section {
+  background-color: rgba(255, 255, 255, 0.89);
+  color: black;
+  margin: 1.5em;
+  padding: 3vw;
+  box-shadow: 5px 10px black;
+  border-radius: 5px;
+}
+
+#events-form input {
+  margin: .6em;
+  padding: .4em;
+  width: 50%;
+  font-size: .8em;
+}
+
+#expand-one-btn, #expand-event-btn{
+  width: 90%;
+  text-align: left;
+  margin: 10px;
+  border: none;
+}
+#expand-one-btn:hover, #expand-event-btn:hover{
+  background-color: rgb(48, 42, 83);
+  color: white;
+}
+#expand-two-btn{
+  width: 90%;
+  text-align: left;
+  margin: 10px;
+  border: none;
+}
+#expand-two-btn:hover{
+  background-color:  rgb(48, 42, 83);
+  color: white;
+}
+
+#expand-weather-btn{
+  width: 90%;
+  text-align: left;
+  margin: 10px;
+  border: none;
+}
+
+#expand-weather-btn:hover{
+  background-color:  rgb(48, 42, 83);
+  color: white;
+}
+
+.expand-btn-text{
+  width: 80%;
+  float: left;
+  font-size: 2em;
+  font-family: 'Baloo', cursive;
+}
+.expand-btn-plus-1, .expand-btn-plus-event{
+  text-align: right;
+  float: right;
+  width: 20%;
+  font-size: 2em;
+}
+.expand-btn-plus-2{
+  text-align: right;
+  float: right;
+  width: 20%;
+  font-size: 2em;
+}
+
+.expand-btn-plus-weather{
+  text-align: right;
+  float: right;
+  width: 20%;
+  font-size: 2em;
+}
+
+.event-section p {
+  margin: .5em;
+}
+.event-section a {
+  color: rgb(255, 255, 255);
+  font-family: Arial, Helvetica, sans-serif;
+  text-decoration: none;
+  border-radius: 6px;
+  background-color: rgb(153, 153, 153);
+  margin: 1em;
+  padding: .4em 1.5em .4em 1.5em;
+  box-shadow: 4px 4px 4px black;
+
+}
+.content-one, .content-two, .content-weather, .content-event {
+  display: none;
+}
+
+.event-section a:hover{
+  background-color: rgb(66, 66, 66);
+}
+
+#about-body h6 {
+  font-family: 'Baloo', cursive
+}

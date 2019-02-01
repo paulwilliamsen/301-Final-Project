@@ -1,0 +1,105 @@
+body {
+  display: flex;
+  flex-direction: column;
+  background-image: url("https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1504&q=80");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align: center;
+}
+
+.hidden-form {
+  display: none;
+}
+
+.hidden-traffic {
+  display: none;
+}
+
+h1 {
+  font-size: 3.5em;
+  font-family: 'Bungee Shade', cursive;
+  color: white;
+  padding: .5em;
+  text-shadow: 2px 2px black;
+}
+
+h2 {
+  font-family: 'Baloo', cursive;
+}
+
+h3 {
+  font-size: 3em;
+  font-family: 'Bungee Shade', cursive;
+}
+
+p {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* input:focus {
+  outline: black;
+  
+} */
+
+.hidden-div{
+  display: hidden;
+  height: 8em;
+}
+button {
+  width: 15em;
+  padding: .6em;
+  margin-top: 15px;
+  font-size: 1em;
+  border-radius: 20px;
+  outline: none;
+  color: black;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  width:100%;
+  height: 2.5em;
+  font-size: 1em;
+  background: #333;
+  position: fixed;
+  bottom: 0;
+}
+
+.footer form {
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #333;
+  width: 25%;
+  height: 100%;
+}
+.footer button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: none;
+  color: white;
+  font-family: 'Baloo', cursive;
+  height: 100%;
+  border: none;
+  border-radius: 0%;
+}
+.footer button:hover{
+  background-color: #f2f2f2;
+  color: black;
+  font-family: 'Baloo', cursive;
+}
+
+.navParent{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;;
+}

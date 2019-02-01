@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+  <body id="dashboard-body">
+    <%- include('../partials/header', uID) %>
+
+    <form action="/location" method="post">
+      <input type="text" name="search" placeholder="Enter a new location" required/>
+      <button type="submit">New Search</button>
+    </form>
+    <section class="weather-section">
+      <h2 class="location-name"><%= location.formatted_query %></h2>
+      <img src="<%= weather[0].icon %>"> </img>
+      <p><%= weather[0].time %></p>
+      <p><%= weather[0].forecast %></p>
+      <p>High: <%= weather[0].high %> &#8457;</p>
+      <p>Low: <%= weather[0].low %> &#8457;</p>
+      
+      <section class="expand-weather">
+        <button id="expand-weather-btn">
+          <section class="expand-btn-text">Forecast for the Week Ahead</section>
+          <section class="expand-btn-plus-weather">+</section>
+        </button>
+        <section class="content-weather">
+          <%- include('../partials/weather') %>
+        </section>
+    </section>
+
+    <section class="expand-two">
+        <button id="expand-two-btn">
+          <section class="expand-btn-text">Today's Traffic Updates</section>
+          <section class="expand-btn-plus-2">+</section>
+        </button>
+        <section class="content-two">
+          <% traffic.forEach(incident =>{ %>
+          <section class="traffic-section">
+            <img src='<%= incident.iconURL%>'></img>
+            <div class="traffic-text">
+              <p><%= incident.fullDesc %></p>
+            </div>
+          </section> 
+          <% }) %>
+        </section>
+        <p id="no-traffic" class="hidden-traffic">Currently no traffic updates</p>
+    </section>
+
+    <section class="expand-one">
+      <button id="expand-one-btn">
+        <section class="expand-btn-text">Today's Top Stories</section>
+        <section class="expand-btn-plus-1">+</section>
+      </button>
+      <section class="content-one">
+        <% news.forEach(story =>{ %>
+        <section class="news-section">
+          <img src='<%= story.image_url%>'></img>
+          <div class="news-text">
+            <p><a href="<%= story.url %>"><%= story.title %></a></p>
+            <p><%= story.author %></p>
+            <p><%= story.description %></p>
+            <p><%= story.name %></p>
+          </div>
+        </section> 
+      <% }) %>
+      </section>
+  </section>
+  
+
+      <div class="hidden-div"></div>
+    <section class="footer">
+      <%- include('../partials/footercontent', {uID}) %>
+      <%- include('../partials/footer') %>
+    </section>
+  </body>
+</html>
+
