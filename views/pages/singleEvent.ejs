@@ -6,7 +6,7 @@
 <body>
     <%- include('../partials/header', uID)%>
     <% let date = new Date(info.date).toISOString().substring(0, 10); %>
-    <form action="/update/<%= info.id %>" method='post'>
+    <form id="events-form" action="/update/<%= info.id %>" method='post'>
       <input type="hidden" name="_method" value='put'>
       <input type="date" name="date" value="<%- date   %>" required/>
       <input type="time" name="start_time" value="<%- info.start_time  %>"/>
