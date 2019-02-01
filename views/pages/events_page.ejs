@@ -4,7 +4,7 @@
       <%- include('../partials/head') %>
   </head>
   <body id="events-body">
-    <%- include('../partials/header', uID)%>
+    <%- include('../partials/header', user_id)%>
     
     <section class="expand-events">
         <button id="expand-event-btn">
@@ -18,7 +18,7 @@
 
       <input type="text" name="title" placeholder="Title" required/> 
       <input type="text" name="description" placeholder="Description"/> 
-      <input type="hidden" name="uID" value="<%- uID  %>">
+      <input type="hidden" name="user_id" value="<%- user_id  %>">
       <button type="submit">Submit</button>
     </form>
   </section>
@@ -26,13 +26,13 @@
 
     <div id="events-display">
       <% if(events.length) { %>
-      <%- include('../partials/events', {events, uID}) %>
+      <%- include('../partials/events', {events, user_id}) %>
       <% }; %>
     </div>
 
     <div class="hidden-div"></div>
     <section class="footer">
-    <%- include('../partials/footercontent', {uID}) %>
+    <%- include('../partials/footercontent', {user_id}) %>
     <%- include('../partials/footer') %>
     </section>
   </body>
