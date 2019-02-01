@@ -36,9 +36,10 @@ p.error-message {
   color: whitesmoke;
   font-size: 1em;
   font-family: 'Baloo', cursive;
-  text-decoration: underline overline;
+  text-decoration: overline;
   text-align: center;
   padding: 1em;
+  margin-bottom: 10px;
 }
 
 .location-form input {
