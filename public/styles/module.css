@@ -145,6 +145,19 @@ p.error-message {
   background-color:  rgb(48, 42, 83);
   color: white;
 }
+
+#expand-weather-btn{
+  width: 90%;
+  text-align: left;
+  margin: 10px;
+  border: none;
+}
+
+#expand-two-weather:hover{
+  background-color:  rgb(48, 42, 83);
+  color: white;
+}
+
 .expand-btn-text{
   width: 80%;
   float: left;
@@ -162,10 +175,21 @@ p.error-message {
   width: 20%;
   font-size: 2em;
 }
+
+.expand-btn-plus-weather{
+  text-align: right;
+  float: right;
+  width: 20%;
+  font-size: 2em;
+}
+
 .event-section a {
   color: rgb(78, 78, 180);
   font-family: Arial, Helvetica, sans-serif;
   text-decoration: none;
   border: 1px solid black;
   padding: .2em;
+}
+.content-one, .content-two, .content-weather {
+  display: none;
 }
